@@ -7,7 +7,7 @@
 	Plugin Name: 	Gig Gizmo Show Calendar Shortcode
 	Plugin URI: 	https://giggizmo.com/word-press-calendar/
 	Description: 	Shortcode plugin to show gigs for bands and venues on pages and posts.
-	Version: 			0.1.2
+	Version: 			0.1.3
 	Author: 			Cory Noll Crimmins - Golden
 	Author URI: 	https://giggizmo.com
 	Text Domain:	gig-gizmo-word-press-plugin

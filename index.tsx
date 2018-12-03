@@ -16,7 +16,13 @@ type PluginConfig = {
 };
 
 export default class Plugin {
-	static Config: PluginConfig;
+	static Config: PluginConfig = {
+		showTable: {
+			band: null,
+			venue: null,
+			array: null
+		}
+	};
 	static config(config: PluginConfig) {
 		Plugin.Config = config;
 	}
@@ -43,7 +49,6 @@ export default class Plugin {
 		BandButton: {
 			new: () => ({
 				render: (id: string, args: BandButtonProps) => {
-					const config = Plugin.Config;
 					const element = document.createElement("div");
 					ReactDOM.render(
 						<BandButton
@@ -61,7 +66,6 @@ export default class Plugin {
 		VenueButton: {
 			new: () => ({
 				render: (id: string, args: VenueButtonProps) => {
-					const config = Plugin.Config;
 					const element = document.createElement("div");
 					ReactDOM.render(
 						<VenueButton
@@ -79,7 +83,6 @@ export default class Plugin {
 		GigButton: {
 			new: () => ({
 				render: (id: string, args: GigButtonProps) => {
-					const config = Plugin.Config;
 					const element = document.createElement("div");
 					ReactDOM.render(
 						<GigButton
@@ -98,5 +101,5 @@ export default class Plugin {
 }
 
 if (typeof window !== "undefined") {
-	(window as any).GigGizmoWidget = Plugin;
+	(window as any).WordPressPlugin = Plugin;
 }
