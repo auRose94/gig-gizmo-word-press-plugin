@@ -21,7 +21,7 @@ export default class Plugin {
 		Plugin.Config = config;
 	}
 	static widgets = {
-		itemsLength: {
+		ShowTable: {
 			new: () => ({
 				render: (id: string, args: ShowTableProps) => {
 					const config = Plugin.Config;

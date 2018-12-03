@@ -10,7 +10,7 @@
 	Version: 			0.7.13
 	Author: 			Cory Noll Crimmins - Golden
 	Author URI: 	https://giggizmo.com
-	Text Domain:	gig-gizmo-show-calendar-shortcode
+	Text Domain:	gig-gizmo-word-press-plugin
 */
 
 function renderOnloadFunction($id, $band, $venue, $array) {

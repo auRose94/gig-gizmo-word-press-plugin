@@ -1,6 +1,6 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"license": "MIT",
 	"config": {
 		"server": "https://giggizmo.com"
