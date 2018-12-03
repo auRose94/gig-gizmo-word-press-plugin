@@ -1,0 +1,16 @@
+.table {
+  background: #ffffff;
+  display: inline-table;
+  height: auto;
+  max-width: 100%;
+  min-width: 420px;
+  position: relative;
+  width: 100%;
+}
+
+.icons {
+  left: unset;
+  position: absolute;
+  right: 0;
+  top: calc(50% - 12px);
+}

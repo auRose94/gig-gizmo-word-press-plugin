@@ -1,0 +1,12 @@
+
+.pagination-settings-container {
+  display: inline-flex;
+  flex-flow: row;
+}
+
+.pagination-settings-container > .form-group {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}

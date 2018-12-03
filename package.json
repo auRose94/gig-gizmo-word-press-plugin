@@ -1,0 +1,56 @@
+{
+	"name": "gig-gizmo-word-press-plugin",
+	"version": "0.1.0",
+	"license": "MIT",
+	"config": {
+		"dev": "development",
+		"server": "https://giggizmo.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Halsys/gig-gizmo-word-press-plugin.git"
+	},
+	"scripts": {
+		"start": "webpack --config webpack.config.js",
+		"prepare": "webpack --config webpack.config.js --release"
+	},
+	"dependencies": {
+		"@types/react": "^16.7.11",
+		"@types/react-bootstrap": "^0.32.15",
+		"@types/react-dom": "^16.0.11",
+		"gig-gizmo-sdk": "git+https://github.com/Halsys/gig-gizmo-sdk.git",
+		"moment": "^2.22.2",
+		"react": "^16.6.3",
+		"react-bootstrap": "^0.32.4",
+		"react-dom": "^16.6.3",
+		"ts-loader": "^5.3.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.1.6",
+		"@babel/preset-env": "^7.1.6",
+		"awesome-typescript-loader": "^5.2.1",
+		"babel-loader": "^8.0.4",
+		"css-loader": "^1.0.1",
+		"eslint": "^4.19.1",
+		"eslint-config-airbnb": "^15.1.0",
+		"eslint-config-prettier": "^2.10.0",
+		"eslint-import-resolver-node": "^0.3.2",
+		"eslint-loader": "^1.9.0",
+		"eslint-plugin-css-modules": "^2.10.0",
+		"eslint-plugin-flowtype": "^2.50.3",
+		"eslint-plugin-import": "^2.14.0",
+		"eslint-plugin-jsx-a11y": "^5.1.1",
+		"eslint-plugin-prettier": "^2.7.0",
+		"eslint-plugin-react": "^7.11.1",
+		"prettier": "1.14.2",
+		"source-map-loader": "^0.2.4",
+		"style-loader": "^0.23.1",
+		"stylelint": "^9.9.0",
+		"stylelint-config-standard": "^18.2.0",
+		"stylelint-order": "^1.0.0",
+		"typescript": "^3.2.1",
+		"uglifyjs-webpack-plugin": "^2.0.1",
+		"webpack": "^4.26.1",
+		"webpack-cli": "^3.1.2"
+	}
+}
