@@ -1,6 +1,6 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"license": "MIT",
 	"config": {
 		"server": "https://giggizmo.com"
@@ -22,6 +22,7 @@
 		"react": "^16.6.3",
 		"react-bootstrap": "^0.32.4",
 		"react-dom": "^16.6.3",
+		"source-map-support": "^0.5.9",
 		"ts-loader": "^5.3.1"
 	},
 	"devDependencies": {
