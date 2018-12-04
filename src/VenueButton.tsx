@@ -106,7 +106,7 @@ export default class VenueButton
 		const description = venue && venue.description ? venue.description : "Loading...";
 		const tooltip = (
 			<Tooltip id={`${venueId}Tooltip`} className="VenueButtonTooltip">
-				{htmlToText(description)}
+				{htmlToText(description).slice(0, 256)}
 			</Tooltip>
 		);
 		return (

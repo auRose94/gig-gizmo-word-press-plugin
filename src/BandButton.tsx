@@ -107,7 +107,7 @@ export default class BandButton
 		const description = band && band.description ? band.description : "Loading...";
 		const tooltip = (
 			<Tooltip id={`${bandId}Tooltip`} className="bandTooltip">
-				{htmlToText(description)}
+				{htmlToText(description).slice(0, 256)}
 			</Tooltip>
 		);
 		return (
