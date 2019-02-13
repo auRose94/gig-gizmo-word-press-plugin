@@ -6,8 +6,7 @@ import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import packageInfo from "../package.json";
-const { server } = packageInfo.config;
+import { server } from "./config";
 
 export interface GigButtonProps {
 	gigId: string;

@@ -1,10 +1,7 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.1.9",
+	"version": "0.2.0",
 	"license": "MIT",
-	"config": {
-		"server": "https://giggizmo.com"
-	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Halsys/gig-gizmo-word-press-plugin.git"

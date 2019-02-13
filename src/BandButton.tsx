@@ -5,11 +5,9 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
-import packageInfo from "../package.json";
+import { server } from "./config";
 import { htmlToText } from "./shared";
 import "./styles/BandButton.css";
-
-const { server } = packageInfo.config;
 
 interface BandButtonState {
 	icon: Upload  | undefined | null;
