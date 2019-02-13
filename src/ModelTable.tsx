@@ -1,44 +1,43 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import * as moment from "moment";
-import * as Table from "react-bootstrap/lib/Table";
-import * as Button from "react-bootstrap/lib/Button";
-import * as Checkbox from "react-bootstrap/lib/Checkbox";
-import * as OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
-import * as Tooltip from "react-bootstrap/lib/Tooltip";
-import * as Glyphicon from "react-bootstrap/lib/Glyphicon";
 import { RESTModel } from "gig-gizmo-sdk";
+import moment from "moment";
+import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import Checkbox from "react-bootstrap/lib/Checkbox";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
+import Table from "react-bootstrap/lib/Table";
+import Tooltip from "react-bootstrap/lib/Tooltip";
 
-import TablePagination from "./TablePagination";
 import "./ColumnData";
 import "./styles/table.css";
+import TablePagination from "./TablePagination";
 
-type ModelTableProps = {
-	selected: string[],
-	columnData: ColumnData[],
-	models: RESTModel[],
-	order: string,
-	orderBy: string,
-	rowsPerPage: number,
-	rowsPerPageOptions: number[],
-	page: number,
-	onSelect: Function | null,
-	onSelectAll: Function | null,
-	onPageChange: Function,
-	onRowsPerPageChange: Function,
-	onRequestSort: Function
-};
+interface ModelTableProps {
+	selected: string[] | null;
+	columnData: ColumnData[];
+	models: RESTModel[];
+	order: string;
+	orderBy: string;
+	rowsPerPage: number;
+	rowsPerPageOptions: number[];
+	page: number;
+	onSelect: ((event: any, selected: string[] | null) => void) | null;
+	onSelectAll: ((event: any, checked: boolean) => void) | null;
+	onRequestSort: (event: any, orderBy: string, dir: string) => void;
+	onPageChange: (event: any, page: number) => void;
+	onRowsPerPageChange: (event: any, rows: number) => void;
+}
 
 export default class ModelTable
 	extends React.Component<ModelTableProps> {
 
-	isSelected(id: string) {
+	public isSelected(id: string) {
 		const selected = this.props.selected;
 		return (Array.isArray(selected) ? selected : [])
 			.includes(id);
 	}
 
-	renderRow(item: any) {
+	public renderRow(item: any) {
 		const isSelected = this.isSelected(item._id);
 		const {
 			onSelect,
@@ -46,12 +45,15 @@ export default class ModelTable
 		} = this.props;
 		const selectable = onSelect !== null;
 		const onSelectEvent = (event: any) => {
-			if (selectable) {
-				const index = selected.findIndex((o: string) => o === item._id);
-				if (index === -1)
-					selected.push(item._id);
-				else
-					selected.splice(index, 1);
+			if (selectable && onSelect) {
+				if (Array.isArray(selected)) {
+					const index = selected.findIndex((o: string) => item && o === item._id);
+					if (index === -1 && item) {
+						selected.push(item._id);
+					} else {
+						selected.splice(index, 1);
+					}
+				}
 				onSelect(event, selected);
 			}
 		};
@@ -60,7 +62,7 @@ export default class ModelTable
 			const isButton = typeof onClick === "function";
 			const isFormatted = typeof format === "function";
 			const value = item[id];
-			let isDate =
+			const isDate =
 				(
 					(typeof value === "string" && !isNaN(Date.parse(value))) ||
 					(typeof value === "number")
@@ -68,7 +70,7 @@ export default class ModelTable
 				.isValid();
 			const key = `${item._id}${id}`;
 			let content = null;
-			if (isFormatted) {
+			if (isFormatted && format) {
 				content = format(item, value);
 			} else if (isDate) {
 				content = moment(value)
@@ -76,21 +78,22 @@ export default class ModelTable
 			} else {
 				content = `${value}`;
 			}
-			if (isButton)
+			if (isButton && onClick) {
 				return (
 					<td key={key}>
-						<Button onClick={event => onClick(event, item)}>
+						<Button onClick={(event) => onClick(event, item)}>
 							{content}
 						</Button>
 					</td>
 				);
+			}
 			return (
 				<td key={key}>
 					{content}
 				</td>
 			);
 		});
-		//TODO: Create classes for selected and unselected?
+		// TODO: Create classes for selected and unselected?
 
 		return (
 			<tr
@@ -110,7 +113,7 @@ export default class ModelTable
 		);
 	}
 
-	renderTableHeader() {
+	public renderTableHeader() {
 		const {
 			onRequestSort,
 			order,
@@ -132,7 +135,7 @@ export default class ModelTable
 						<th>
 							<Checkbox
 								checked={numSelected === itemsLength}
-								onChange={event =>
+								onChange={(event) =>
 									onSelectAll(event, numSelected !== itemsLength)
 								}
 							/>
@@ -142,13 +145,13 @@ export default class ModelTable
 						(column: any) => {
 							const sortable = column.sortable !== null && column.sortable;
 							let content = null;
-							if(sortable) {
+							if (sortable) {
 								const showSort = orderBy === column.id;
 								const orderBool = order === "asc";
 								const click = showSort && !orderBool ? "asc" : "desc";
 								const glyph = orderBool ? "glyphicon glyphicon-arrow-up" : "glyphicon glyphicon-arrow-down";
 								let tooltipString = "Sort descending";
-								if(showSort && !orderBool) tooltipString = "Sort ascending";
+								if (showSort && !orderBool) { tooltipString = "Sort ascending"; }
 								content = (
 									<OverlayTrigger
 										placement="top"
@@ -159,7 +162,7 @@ export default class ModelTable
 										)}>
 										<Button
 											bsStyle="default"
-											onClick={event =>
+											onClick={(event) =>
 												onRequestSort(event, orderBy, click)
 											}>
 												{showSort && <Glyphicon glyph={glyph}/>}
@@ -167,9 +170,9 @@ export default class ModelTable
 										</Button>
 									</OverlayTrigger>
 								);
-							}
-							else
+							} else {
 								content = column.label;
+							}
 							return (
 								<th key={column.id}>
 									{content}
@@ -182,7 +185,7 @@ export default class ModelTable
 		);
 	}
 
-	render() {
+	public render() {
 		const self = this;
 		const {
 			selected,
@@ -201,7 +204,7 @@ export default class ModelTable
 
 		const array = Array.from(models || []);
 		const arrayLength = array.length;
-		if (arrayLength == 0) {
+		if (arrayLength === 0) {
 			return (
 				<div>
 					<h1>{ `Empty!` }</h1>
@@ -220,8 +223,8 @@ export default class ModelTable
 			(event: any, value: number) =>
 				onPageChange(event, value);
 		const onRequestSortCallback =
-			(event: any, orderBy: string, order: string) =>
-				onRequestSort(event, orderBy, order);
+			(event: any, ob: string, o: string) =>
+				onRequestSort(event, ob, o);
 		const onRowsPerPageChangeCallback =
 			(event: any, value: number) =>
 				onRowsPerPageChange(event, value);

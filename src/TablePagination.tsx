@@ -1,20 +1,19 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import * as Pager from "react-bootstrap/lib/Pager";
-import * as Form from "react-bootstrap/lib/Form";
-import * as FormGroup from "react-bootstrap/lib/FormGroup";
-import * as FormControl from "react-bootstrap/lib/FormControl";
-import * as ControlLabel from "react-bootstrap/lib/ControlLabel";
+import React from "react";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import Form from "react-bootstrap/lib/Form";
+import FormControl from "react-bootstrap/lib/FormControl";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import Pager from "react-bootstrap/lib/Pager";
 import "./styles/TablePagination.css";
 
-type TablePaginationProps = {
-	count: number,
-	rowsPerPage: number,
-	page: number,
-	rowsPerPageOptions: number[],
-	onChangePage: Function,
-	onChangeRowsPerPage: Function
-};
+interface TablePaginationProps {
+	count: number;
+	rowsPerPage: number;
+	page: number;
+	rowsPerPageOptions: number[];
+	onChangePage: (event: any, page: number) => void;
+	onChangeRowsPerPage: (event: any, rows: number) => void;
+}
 
 export default class TablePagination
 	extends React.Component<TablePaginationProps> {
@@ -25,34 +24,34 @@ export default class TablePagination
 			(count % rowsPerPage !== 0 ? 1 : 0); // Extra page
 	}
 
-	renderRowPerPageItems() {
+	public renderRowPerPageItems() {
 		return this.props.rowsPerPageOptions.map((item: number) => {
 			return <option key={item.toString()} value={item}>{item}</option>;
-		})
+		});
 	}
 
-	renderPageItems() {
+	public renderPageItems() {
 		const { count, rowsPerPage } = this.props;
-		let items = [];
+		const items = [];
 		for (let i = 0; i < this.pages; i++) {
 			items.push(
-				<option key={i} value={i}>{(i+1).toString()}</option>
+				<option key={i} value={i}>{(i + 1).toString()}</option>
 			);
 		}
 		return items;
 	}
 
-	nextPage(event: any) {
+	public nextPage(event: any) {
 		const { count, rowsPerPage, onChangePage, page } = this.props;
 		onChangePage(event, Math.min(this.pages, page + 1));
 	}
 
-	lastPage(event: any) {
+	public lastPage(event: any) {
 		const { onChangePage, page } = this.props;
 		onChangePage(event, Math.max(0, page - 1));
 	}
 
-	render() {
+	public render() {
 		const self = this;
 		const { count, rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
 		const onRowsPerPageChange =

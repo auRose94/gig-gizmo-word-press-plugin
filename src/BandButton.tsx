@@ -1,28 +1,27 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import * as Button from "react-bootstrap/lib/Button";
-import * as Glyphicon from "react-bootstrap/lib/Glyphicon";
-import * as Tooltip from "react-bootstrap/lib/Tooltip";
-import * as OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
-import { Band, Upload, GigGizmoPropTypes } from "gig-gizmo-sdk";
+import { Band, GigGizmoPropTypes, Upload } from "gig-gizmo-sdk";
+import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
+import Tooltip from "react-bootstrap/lib/Tooltip";
 
+import packageInfo from "../package.json";
 import { htmlToText } from "./shared";
 import "./styles/BandButton.css";
 
-const packageInfo = require("../package.json");
 const { server } = packageInfo.config;
 
-type BandButtonState = {
-	icon: Upload  | undefined | null,
-	band: Band  | undefined | null
-};
+interface BandButtonState {
+	icon: Upload  | undefined | null;
+	band: Band  | undefined | null;
+}
 
-export type BandButtonProps = {
-	bandId: string,
-	icon: Upload | undefined | null,
-	band: Band | undefined | null,
-	onClick: Function | undefined | null
-};
+export interface BandButtonProps {
+	bandId: string;
+	icon: Upload | undefined | null;
+	band: Band | undefined | null;
+	onClick: ((event: any) => void) | null;
+}
 
 export default class BandButton
 	extends React.Component<BandButtonProps, BandButtonState> {
@@ -36,15 +35,17 @@ export default class BandButton
 		};
 	}
 
-	async componentDidMount() {
+	public async componentDidMount() {
 		if (typeof window !== "undefined") {
 			let { band, icon } = this.state;
 			const { bandId } = this.props;
 			try {
-				if (!band && bandId)
+				if (!band && bandId) {
 					band = await Band.findById(bandId);
-				if (band && band.icon)
+				}
+				if (band && band.icon) {
 					icon = await band.getIcon();
+				}
 			} catch (e) {
 				console.error(e);
 			}
@@ -55,14 +56,17 @@ export default class BandButton
 		}
 	}
 
-	handleClick(event: any) {
+	public handleClick(event: any) {
 		event.preventDefault();
 		const { bandId, onClick } = this.props;
-		if (onClick) this.props.onClick(event);
-		else if(bandId) window.location.assign(`${server}/band/${bandId}`);
+		if (onClick) {
+			onClick(event);
+		} else if (bandId) {
+			window.location.assign(`${server}/band/${bandId}`);
+		}
 	}
 
-	render() {
+	public render() {
 		const { bandId } = this.props;
 		const band = this.state.band || this.props.band || null;
 		const icon = this.state.icon || this.props.icon || null;
@@ -72,7 +76,7 @@ export default class BandButton
 		let buttonElement = null;
 		if (band) {
 			let iconElement = null;
-			if (band.icon && icon)
+			if (band.icon && icon) {
 				iconElement = (
 					<img
 						width="32"
@@ -82,7 +86,7 @@ export default class BandButton
 						src={icon.fileData}
 					/>
 				);
-			else iconElement = <Glyphicon glyph="" className="fa fa-music" />;
+			} else { iconElement = <Glyphicon glyph="" className="fa fa-music" />; }
 			buttonElement = (
 				<Button
 					href={`${server}/band/${bandId}`}

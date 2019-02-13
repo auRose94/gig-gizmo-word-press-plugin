@@ -2,47 +2,46 @@
 	Created by corynull on March 18 2018 Sun 7:25 AM
 */
 
-import * as React from "react";
-import * as moment from "moment";
-import * as PropTypes from "prop-types";
-import * as Button from "react-bootstrap/lib/Button";
-import * as Image from "react-bootstrap/lib/Image";
+import moment from "moment";
+import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import Image from "react-bootstrap/lib/Image";
 
 import {
 	Band,
-	Venue,
 	Gig,
+	RESTModel,
 	Upload,
-	RESTModel
+	Venue
 } from "gig-gizmo-sdk";
 
-import ModelTable from "./ModelTable";
-import GigButton from "./GigButton";
 import BandButton from "./BandButton";
-import VenueButton from "./VenueButton";
+import GigButton from "./GigButton";
+import ModelTable from "./ModelTable";
 import "./styles/calendar.css";
+import VenueButton from "./VenueButton";
 
-export type ShowTableProps = {
-	band: string,
-	venue: string,
-	array: string[]
-};
+export interface ShowTableProps {
+	band: string | undefined | null;
+	venue: string | undefined | null;
+	array: string[] | undefined | null;
+}
 
-type ShowTableState = {
-	gigs: Gig[],
-	band: Band,
-	venue: Venue,
-	bands: Map<string, Band | null>,
-	venues: Map<string, Venue | null>,
-	uploads: Map<string, Upload | null>,
-	gigMap: Map<string, Gig | null>,
-	order: string,
-	orderBy: string,
-	page: number,
-	rowsPerPage: number,
-	promises: Array<Promise<void>>,
-	ready: boolean
-};
+interface ShowTableState {
+	gigs: Gig[];
+	band: Band | null;
+	venue: Venue | null;
+	bands: Map<string, Band | null>;
+	venues: Map<string, Venue | null>;
+	uploads: Map<string, Upload | null>;
+	gigMap: Map<string, Gig | null>;
+	order: string;
+	orderBy: string;
+	page: number;
+	rowsPerPage: number;
+	promises: Array<Promise<void>>;
+	ready: boolean;
+}
 
 export default class ShowTable
 	extends React.Component<ShowTableProps, ShowTableState> {
@@ -66,7 +65,7 @@ export default class ShowTable
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		const self = this;
 		this.reload()
 			.then(() => {
@@ -75,10 +74,10 @@ export default class ShowTable
 					order
 				} = self.state;
 				self.handleRequestSort(null, orderBy, order);
-			}, console.error);
+			},    console.error);
 	}
 
-	async reload() {
+	public async reload() {
 		const {
 			band: bandId,
 			venue: venueId,
@@ -109,7 +108,9 @@ export default class ShowTable
 				});
 			}
 		};
-		if (RESTModel.isValidId(bandId)) {
+		if (RESTModel.isValidId(bandId) &&
+			bandId !== null &&
+			bandId !== undefined) {
 			const band = await Band.findById(bandId);
 			bands.set(bandId, band);
 			const rGigs = await band.getGigs();
@@ -128,7 +129,9 @@ export default class ShowTable
 				gigMap,
 				gigs: rGigs
 			});
-		} else if (RESTModel.isValidId(venueId)) {
+		} else if (RESTModel.isValidId(venueId) &&
+			venueId !== null &&
+			venueId !== undefined) {
 			const venue = await Venue.findById(venueId);
 			venues.set(venueId, venue);
 			const rGigs = await venue.getGigs();
@@ -195,7 +198,7 @@ export default class ShowTable
 		}
 	}
 
-	handleRequestSort(event: any, orderBy: string, order: string) {
+	public handleRequestSort(event: any, orderBy: string, order: string) {
 		let {
 			gigs
 		} = this.state;
@@ -205,8 +208,9 @@ export default class ShowTable
 				const aValue = a[orderBy];
 				const maybeDateB = moment(bValue);
 				const maybeDateA = moment(aValue);
-				if (maybeDateB.isValid() && maybeDateA.isValid())
+				if (maybeDateB.isValid() && maybeDateA.isValid()) {
 					return maybeDateB.isBefore(maybeDateA) ? -1 : 1;
+				}
 				return bValue < aValue ? -1 : 1;
 			});
 		} else {
@@ -215,8 +219,9 @@ export default class ShowTable
 				const aValue = a[orderBy];
 				const maybeDateB = moment(bValue);
 				const maybeDateA = moment(aValue);
-				if (maybeDateB.isValid() && maybeDateA.isValid())
+				if (maybeDateB.isValid() && maybeDateA.isValid()) {
 					return maybeDateB.isAfter(maybeDateA) ? -1 : 1;
+				}
 				return bValue > aValue ? -1 : 1;
 			});
 		}
@@ -228,19 +233,19 @@ export default class ShowTable
 		});
 	}
 
-	handleChangePage(event: any, page: number) {
+	public handleChangePage(event: any, page: number) {
 		this.setState({
 			page
 		});
 	}
 
-	handleChangeRowsPerPage(event: any, rowsPerPage: number) {
+	public handleChangeRowsPerPage(event: any, rowsPerPage: number) {
 		this.setState({
 			rowsPerPage
 		});
 	}
 
-	getColumnData(): ColumnData[] {
+	public getColumnData(): ColumnData[] {
 		const { bands, venues, uploads } = this.state;
 		const {
 			band: bandId,
@@ -256,7 +261,7 @@ export default class ShowTable
 				);
 			}
 		}];
-		if (venueId || !bandId)
+		if (venueId || !bandId) {
 			columnData.push({
 				onClick: null,
 				id: "bands",
@@ -266,9 +271,9 @@ export default class ShowTable
 						return n.bands.map(
 								(bid: string) => bands.get(bid) || null
 							)
-							.map((band: Band) => {
-								if(!band) return null;
-								const icon: Upload | null = band.icon ? uploads.get(band.icon) : null;
+							.map((band: Band | null) => {
+								if (!band) { return null; }
+								const icon: Upload | undefined | null = band.icon ? uploads.get(band.icon) : null;
 								return (
 									<BandButton
 										band={band}
@@ -283,29 +288,34 @@ export default class ShowTable
 					}
 				}
 			});
-		if (bandId || !venueId)
+		}
+		if (bandId || !venueId) {
 			columnData.push({
 				onClick: null,
 				id: "venue",
 				label: "Venue",
 				format: (n: Gig): any => {
-					const venue: Venue = n.venue ? venues.get(n.venue) : null;
-					const icon: Upload = venue.icon ? uploads.get(venue.icon) : null;
+					const vId: string = (n && n.venue) ? n.venue : "";
+					const venue: Venue | undefined | null =
+						vId ? venues.get(vId) : null;
+					const icon: Upload | undefined | null =
+						venue && venue.icon ? uploads.get(venue.icon || "") : null;
 					return (
 						<VenueButton
 							venue={venue}
-							key={venue.id}
-							venueId={n.venue}
+							key={vId}
+							venueId={vId}
 							onClick={null}
 							icon={icon}
 						/>
 					);
 				}
 			});
+		}
 		return columnData;
 	}
 
-	render() {
+	public render() {
 		const self = this;
 		const {
 			gigs,
@@ -318,7 +328,7 @@ export default class ShowTable
 
 		const columnData = this.getColumnData();
 
-		if (ready)
+		if (ready) {
 			return (
 				<ModelTable
 					onSelect={null}
@@ -331,17 +341,18 @@ export default class ShowTable
 					rowsPerPage={rowsPerPage}
 					page={page}
 					selected={null}
-					onRequestSort={(event: any, orderBy: string, order: string) =>
-						self.handleRequestSort(event, orderBy, order)
+					onRequestSort={(event: any, ob: string, o: string) =>
+						self.handleRequestSort(event, ob, o)
 					}
-					onPageChange={(event: any, page: number) =>
-						self.handleChangePage(event, page)
+					onPageChange={(event: any, p: number) =>
+						self.handleChangePage(event, p)
 					}
 					onRowsPerPageChange={(event: any, option: number) =>
 						self.handleChangeRowsPerPage(event, option)
 					}
 					/>
 			);
+		}
 		// TODO: return nothing and wait?
 		return null;
 	}

@@ -9,7 +9,7 @@ export function htmlToText(html: string) {
 	buffer = buffer.replace(/&amp;/g, "&");
 	buffer = buffer.replace(/&lt;/g, "<");
 	buffer = buffer.replace(/&gt;/g, ">");
-	buffer = buffer.replace(/&quot;/g, '"');
+	buffer = buffer.replace(/&quot;/g, "\"");
 	buffer = buffer.replace(/&apos;/g, "'");
 	buffer = buffer.replace(/&cent;/g, "¢");
 	buffer = buffer.replace(/&pound;/g, "£");
@@ -18,4 +18,4 @@ export function htmlToText(html: string) {
 	buffer = buffer.replace(/&copy;/g, "©");
 	buffer = buffer.replace(/&reg;/g, "®");
 	return buffer;
-};
+}

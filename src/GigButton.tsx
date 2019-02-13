@@ -1,25 +1,23 @@
-import * as moment from "moment";
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import * as Button from "react-bootstrap/lib/Button";
-import * as Glyphicon from "react-bootstrap/lib/Glyphicon";
 import {
-	Gig,
-	GigGizmoPropTypes
+	Gig
 } from "gig-gizmo-sdk";
+import moment from "moment";
+import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-const packageInfo = require("../package.json");
+import packageInfo from "../package.json";
 const { server } = packageInfo.config;
 
-export type GigButtonProps = {
-	gigId: string,
-	gig: Gig | undefined | null,
-	onClick: Function | undefined | null
-};
+export interface GigButtonProps {
+	gigId: string;
+	gig: Gig | undefined | null;
+	onClick: ((event: any) => void) | null;
+}
 
-export type GigButtonState = {
-	gig:  | undefined | null,
-};
+export interface GigButtonState {
+	gig:  | undefined | null;
+}
 
 export default class GigButton
 	extends React.Component<GigButtonProps, GigButtonState> {
@@ -31,7 +29,7 @@ export default class GigButton
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		if (typeof window !== "undefined") {
 			const self = this;
 			const {
@@ -40,7 +38,7 @@ export default class GigButton
 			const { gig } = this.state;
 			if (!gig && gigId) {
 				Gig.findById(gigId)
-					.then(item => {
+					.then((item) => {
 						self.setState({
 							gig: item
 						});
@@ -49,37 +47,37 @@ export default class GigButton
 		}
 	}
 
-	handleClick(event: any) {
+	public handleClick(event: any) {
 		event.preventDefault();
 		const gigId = this.props.gigId;
-		if (this.props.onClick) this.props.onClick(event);
-		else if (gigId)
+		if (this.props.onClick) { this.props.onClick(event); } else if (gigId) {
 			window.location.assign(`${server}/gig/${gigId}`);
+							}
 	}
 
-	render() {
+	public render() {
 		const self = this;
 		const gig = this.state.gig || this.props.gig || null;
 		const gigId = this.props.gigId || null;
-		const venueStartTime = moment(gig.startTime);
-		const venueStopTime = moment(gig.stopTime);
 		const onClick = (event: any) => self.handleClick(event);
 		if (gig) {
+			const venueStartTime = moment(gig.startTime);
+			const venueStopTime = moment(gig.stopTime);
 			const time = `${venueStartTime.format("LLL")} - ${venueStopTime.format("LT")}`;
 			return (
-				<Button
-					href={`${server}/gig/${gig._id}`}
-					className="GigButton"
-					onClick={onClick}
-				>
-					<Glyphicon glyph="" className="fa fa-calendar" />
-					{time}
-				</Button>
-			);
+					<Button
+						href={`${server}/gig/${gig._id}`}
+						className="GigButton"
+						onClick={onClick}
+					>
+						<Glyphicon glyph="" className="fa fa-calendar" />
+						{time}
+					</Button>
+				);
 		}
 		return (
 			<Button
-				href={`${server}/gig/${gig._id}`}
+				href={`${server}/gig/${gigId}`}
 				className="GigButton"
 				onClick={onClick}
 			>

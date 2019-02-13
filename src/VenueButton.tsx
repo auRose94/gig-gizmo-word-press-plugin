@@ -1,29 +1,27 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import * as Button from "react-bootstrap/lib/Button";
-import * as Glyphicon from "react-bootstrap/lib/Glyphicon";
-import * as Tooltip from "react-bootstrap/lib/Tooltip";
-import * as OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
-import { Venue, Upload, GigGizmoPropTypes } from "gig-gizmo-sdk";
+import { GigGizmoPropTypes, Upload, Venue } from "gig-gizmo-sdk";
+import React from "react";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
+import Tooltip from "react-bootstrap/lib/Tooltip";
 
+import packageInfo from "../package.json";
 import { htmlToText } from "./shared";
 import "./styles/VenueButton.css";
 
-const packageInfo = require("../package.json");
 const { server } = packageInfo.config;
 
-type VenueButtonState = {
-	icon: Upload | null,
-	venue: Venue | null
-};
+interface VenueButtonState {
+	icon: Upload | undefined | null;
+	venue: Venue | undefined | null;
+}
 
-export type VenueButtonProps = {
-	venueId: string,
-	icon: Upload | undefined | null,
-	venue: Venue | undefined | null,
-	onClick: Function | undefined | null
-};
-
+export interface VenueButtonProps {
+	venueId: string;
+	icon: Upload | undefined | null;
+	venue: Venue | undefined | null;
+	onClick: ((event: any) => void) | null;
+}
 
 export default class VenueButton
 	extends React.Component<VenueButtonProps, VenueButtonState> {
@@ -37,15 +35,17 @@ export default class VenueButton
 		};
 	}
 
-	async componentDidMount() {
+	public async componentDidMount() {
 		if (typeof window !== "undefined") {
 			let { venue, icon } = this.state;
 			const { venueId } = this.props;
 			try {
-				if (!venue && venueId)
+				if (!venue && venueId) {
 					venue = await Venue.findById(venueId);
-				if (venue && venue.icon)
+				}
+				if (venue && venue.icon) {
 					icon = await venue.getIcon();
+				}
 			} catch (e) {
 				console.error(e);
 			}
@@ -56,14 +56,17 @@ export default class VenueButton
 		}
 	}
 
-	handleClick(event: any) {
+	public handleClick(event: any) {
 		event.preventDefault();
 		const { venueId, onClick } = this.props;
-		if (onClick) this.props.onClick(event);
-		else if (venueId) window.location.assign(`${server}/venue/${venueId}`);
+		if (onClick) {
+			onClick(event);
+		} else if (venueId) {
+			window.location.assign(`${server}/venue/${venueId}`);
+		}
 	}
 
-	render() {
+	public render() {
 		const { venueId } = this.props;
 		const self = this;
 		const venue = this.state.venue || this.props.venue || null;
@@ -72,7 +75,7 @@ export default class VenueButton
 		let buttonElement = null;
 		if (venue) {
 			let iconElement = null;
-			if (venue.icon && icon)
+			if (venue.icon && icon) {
 				iconElement = (
 					<img
 						width="32"
@@ -82,7 +85,7 @@ export default class VenueButton
 						src={icon.fileData}
 					/>
 				);
-			else iconElement = <Glyphicon glyph="" className="fa fa-glass" />;
+			} else { iconElement = <Glyphicon glyph="" className="fa fa-glass" />; }
 
 			buttonElement = (
 				<Button

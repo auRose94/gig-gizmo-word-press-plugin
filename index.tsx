@@ -1,32 +1,29 @@
+import { Band, Gig, Venue } from "gig-gizmo-sdk";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Band, Venue, Gig } from "gig-gizmo-sdk";
-import BandButton, {BandButtonProps} from "./src/BandButton";
-import VenueButton, {VenueButtonProps} from "./src/VenueButton";
-import GigButton, {GigButtonProps} from "./src/GigButton";
-import ShowTable, {ShowTableProps} from "./src/ShowTable";
+import BandButton, { BandButtonProps } from "./src/BandButton";
+import GigButton, { GigButtonProps } from "./src/GigButton";
+import ShowTable, { ShowTableProps } from "./src/ShowTable";
+import VenueButton, { VenueButtonProps } from "./src/VenueButton";
 
-type PluginConfig = {
+interface PluginConfig {
 	showTable: {
-		band: string | null | undefined,
-		venue: string | null | undefined,
-		array: string[] | null | undefined
-		//TODO?: Add more!
-	}
-};
+		band: string | null | undefined;
+		venue: string | null | undefined;
+		array: string[] | null | undefined;
+		// TODO?: Add more!
+	};
+}
 
 export default class Plugin {
-	static Config: PluginConfig = {
+	public static Config: PluginConfig = {
 		showTable: {
 			band: null,
 			venue: null,
 			array: null
 		}
 	};
-	static config(config: PluginConfig) {
-		Plugin.Config = config;
-	}
-	static widgets = {
+	public static widgets = {
 		ShowTable: {
 			new: () => ({
 				render: (id: string, args: ShowTableProps) => {
@@ -98,6 +95,9 @@ export default class Plugin {
 		},
 
 	};
+	public static config(config: PluginConfig) {
+		Plugin.Config = config;
+	}
 }
 
 if (typeof window !== "undefined") {

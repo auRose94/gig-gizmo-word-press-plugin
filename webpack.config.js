@@ -1,5 +1,4 @@
 const isDebug = !process.argv.includes("--release");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
 	mode: isDebug ? "development" : "production",
@@ -33,24 +32,5 @@ module.exports = {
 		path: __dirname + "/"
 	},
 
-	optimization: isDebug ? {
-		//Debug optimizations
-	} : {
-		// Release optimizations
-		minimizer: [new UglifyJsPlugin({
-			sourceMap: true,
-			parallel: true,
-			uglifyOptions: {
-				warnings: false,
-				parse: {},
-				compress: {},
-				mangle: true, // Note `mangle.properties` is `false` by default.
-				output: null,
-				toplevel: false,
-				nameCache: null,
-				ie8: false,
-				keep_fnames: false,
-			}
-		})]
-	}
+	optimization: {}
 }
