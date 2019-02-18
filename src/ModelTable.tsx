@@ -188,18 +188,12 @@ export default class ModelTable
 	public render() {
 		const self = this;
 		const {
-			selected,
 			models,
-			order,
-			orderBy,
 			rowsPerPage,
 			rowsPerPageOptions,
-			onSelectAll,
 			page,
-			columnData,
 			onPageChange,
-			onRowsPerPageChange,
-			onRequestSort
+			onRowsPerPageChange
 		} = this.props;
 
 		const array = Array.from(models || []);
@@ -217,14 +211,10 @@ export default class ModelTable
 
 		const items = array.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 		const rowElements = items.map((item: RESTModel) => self.renderRow(item));
-		const numSelected = Array.isArray(selected) ? selected.length : null;
 
 		const onPageChangeCallback =
 			(event: any, value: number) =>
 				onPageChange(event, value);
-		const onRequestSortCallback =
-			(event: any, ob: string, o: string) =>
-				onRequestSort(event, ob, o);
 		const onRowsPerPageChangeCallback =
 			(event: any, value: number) =>
 				onRowsPerPageChange(event, value);

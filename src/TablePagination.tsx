@@ -31,7 +31,6 @@ export default class TablePagination
 	}
 
 	public renderPageItems() {
-		const { count, rowsPerPage } = this.props;
 		const items = [];
 		for (let i = 0; i < this.pages; i++) {
 			items.push(
@@ -42,7 +41,7 @@ export default class TablePagination
 	}
 
 	public nextPage(event: any) {
-		const { count, rowsPerPage, onChangePage, page } = this.props;
+		const { onChangePage, page } = this.props;
 		onChangePage(event, Math.min(this.pages, page + 1));
 	}
 
@@ -53,7 +52,7 @@ export default class TablePagination
 
 	public render() {
 		const self = this;
-		const { count, rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
+		const { rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
 		const onRowsPerPageChange =
 			(event: any) => onChangeRowsPerPage(event, event.target.value);
 		const onPageChange =

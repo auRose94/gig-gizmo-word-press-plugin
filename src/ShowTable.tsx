@@ -4,8 +4,6 @@
 
 import moment from "moment";
 import React from "react";
-import Button from "react-bootstrap/lib/Button";
-import Image from "react-bootstrap/lib/Image";
 
 import {
 	Band,
@@ -198,7 +196,7 @@ export default class ShowTable
 		}
 	}
 
-	public handleRequestSort(event: any, orderBy: string, order: string) {
+	public handleRequestSort(_event: any, orderBy: string, order: string) {
 		let {
 			gigs
 		} = this.state;
@@ -233,13 +231,13 @@ export default class ShowTable
 		});
 	}
 
-	public handleChangePage(event: any, page: number) {
+	public handleChangePage(_event: any, page: number) {
 		this.setState({
 			page
 		});
 	}
 
-	public handleChangeRowsPerPage(event: any, rowsPerPage: number) {
+	public handleChangeRowsPerPage(_event: any, rowsPerPage: number) {
 		this.setState({
 			rowsPerPage
 		});

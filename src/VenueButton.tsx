@@ -1,4 +1,4 @@
-import { GigGizmoPropTypes, Upload, Venue } from "gig-gizmo-sdk";
+import { Upload, Venue } from "gig-gizmo-sdk";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";

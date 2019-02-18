@@ -15,7 +15,7 @@ export interface GigButtonProps {
 }
 
 export interface GigButtonState {
-	gig:  | undefined | null;
+	gig: Gig | undefined | null;
 }
 
 export default class GigButton
