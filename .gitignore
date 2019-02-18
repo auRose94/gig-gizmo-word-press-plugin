@@ -10,3 +10,5 @@ public/static
 .env.*.local
 src/**/*.js
 src/**/*.js.map
+
+dist/src/

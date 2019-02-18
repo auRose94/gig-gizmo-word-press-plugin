@@ -2,6 +2,7 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"outDir": "./dist/",
+		"rootDir": "./",
 		"allowJs": true,
 		"allowUnreachableCode": false,
 		"noFallthroughCasesInSwitch": true,
