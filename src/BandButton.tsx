@@ -24,7 +24,7 @@ export interface BandButtonProps {
 export default class BandButton
 	extends React.Component<BandButtonProps, BandButtonState> {
 
-	constructor(props: BandButtonProps) {
+	public constructor(props: BandButtonProps) {
 		super(props);
 		const { icon, band } = props;
 		this.state = {
@@ -64,7 +64,7 @@ export default class BandButton
 		}
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const { bandId } = this.props;
 		const band = this.state.band || this.props.band || null;
 		const icon = this.state.icon || this.props.icon || null;

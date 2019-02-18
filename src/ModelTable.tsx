@@ -8,9 +8,15 @@ import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Table from "react-bootstrap/lib/Table";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
-import "./ColumnData";
 import "./styles/table.css";
 import TablePagination from "./TablePagination";
+
+export interface ColumnData {
+	onClick: ((event: any, item: any) => void) | null;
+	id: string;
+	format: ((n: any, v: any) => any) | null;
+	label: string;
+}
 
 interface ModelTableProps {
 	selected: string[] | null;
@@ -29,7 +35,7 @@ interface ModelTableProps {
 }
 
 export default class ModelTable
-	extends React.Component<ModelTableProps> {
+	extends React.Component<ModelTableProps, {}> {
 
 	public isSelected(id: string) {
 		const selected = this.props.selected;
@@ -185,7 +191,7 @@ export default class ModelTable
 		);
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const self = this;
 		const {
 			models,

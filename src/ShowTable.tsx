@@ -15,7 +15,7 @@ import {
 
 import BandButton from "./BandButton";
 import GigButton from "./GigButton";
-import ModelTable from "./ModelTable";
+import { ColumnData, default as ModelTable } from "./ModelTable";
 import "./styles/calendar.css";
 import VenueButton from "./VenueButton";
 
@@ -43,9 +43,12 @@ interface ShowTableState {
 
 export default class ShowTable
 	extends React.Component<ShowTableProps, ShowTableState> {
+	public props: ShowTableProps;
+	public state: ShowTableState;
 
-	constructor(props: ShowTableProps) {
-		super(props);
+	public constructor(props: ShowTableProps, context?: any) {
+		super(props, context);
+		this.props = props;
 		this.state = {
 			band: null,
 			venue: null,
@@ -313,7 +316,7 @@ export default class ShowTable
 		return columnData;
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const self = this;
 		const {
 			gigs,
@@ -352,6 +355,6 @@ export default class ShowTable
 			);
 		}
 		// TODO: return nothing and wait?
-		return null;
+		return <div/>;
 	}
 }

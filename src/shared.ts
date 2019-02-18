@@ -1,6 +1,4 @@
 
-export const env = process.env.NODE_ENV;
-
 export function htmlToText(html: string) {
 	let buffer = html || "";
 	buffer = buffer.replace(/<br(\s+)?\/>/g, "\n");

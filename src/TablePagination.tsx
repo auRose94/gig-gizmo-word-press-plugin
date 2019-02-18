@@ -50,7 +50,7 @@ export default class TablePagination
 		onChangePage(event, Math.max(0, page - 1));
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const self = this;
 		const { rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
 		const onRowsPerPageChange =

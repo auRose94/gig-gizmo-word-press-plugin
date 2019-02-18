@@ -24,7 +24,7 @@ export interface VenueButtonProps {
 export default class VenueButton
 	extends React.Component<VenueButtonProps, VenueButtonState> {
 
-	constructor(props: VenueButtonProps) {
+	public constructor(props: VenueButtonProps) {
 		super(props);
 		const { venue, icon } = props;
 		this.state = {
@@ -64,7 +64,7 @@ export default class VenueButton
 		}
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const { venueId } = this.props;
 		const self = this;
 		const venue = this.state.venue || this.props.venue || null;

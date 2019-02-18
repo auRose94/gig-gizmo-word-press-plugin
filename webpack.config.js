@@ -24,12 +24,12 @@ module.exports = {
 		]
 	},
 
-	entry: "./index.tsx",
+	entry: "./src/index.tsx",
 
 	output: {
 		libraryTarget: "this",
 		filename: "index.js",
-		path: __dirname + "/"
+		path: __dirname + "/dist/"
 	},
 
 	optimization: {}

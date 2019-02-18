@@ -21,7 +21,7 @@ export interface GigButtonState {
 export default class GigButton
 	extends React.Component<GigButtonProps, GigButtonState> {
 
-	constructor(props: GigButtonProps) {
+	public constructor(props: GigButtonProps) {
 		super(props);
 		this.state = {
 			gig: null
@@ -54,7 +54,7 @@ export default class GigButton
 							}
 	}
 
-	public render() {
+	public render(): React.ReactElement {
 		const self = this;
 		const gig = this.state.gig || this.props.gig || null;
 		const gigId = this.props.gigId || null;
