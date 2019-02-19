@@ -93,7 +93,7 @@ export default class ShowTable
 		} = this.state;
 		const self = this;
 		const onError = (error: any) => console.error(error);
-		const onBand = (band: Band) => {
+		const onBand = (band: Band | null) => {
 			if (band) {
 				bands.set(band.id, band);
 				self.setState({
@@ -101,7 +101,7 @@ export default class ShowTable
 				});
 			}
 		};
-		const onVenue = (venue: Venue) => {
+		const onVenue = (venue: Venue | null) => {
 			if (venue) {
 				venues.set(venue.id, venue);
 				self.setState({
@@ -113,23 +113,25 @@ export default class ShowTable
 			bandId !== null &&
 			bandId !== undefined) {
 			const band = await Band.findById(bandId);
-			bands.set(bandId, band);
-			const rGigs = await band.getGigs();
-			rGigs.forEach((gig: Gig) => {
-				gigMap.set(gig.id, gig);
-				promises.push(gig.getVenue()
-					.then(onVenue, onError));
-			});
-			await Promise.all(promises);
-			self.setState({
-				ready: true,
-				band,
-				promises,
-				venues,
-				uploads,
-				gigMap,
-				gigs: rGigs
-			});
+			if (band) {
+				bands.set(bandId, band);
+				const rGigs = await band.getGigs();
+				rGigs.forEach((gig: Gig) => {
+					gigMap.set(gig.id, gig);
+					promises.push(gig.getVenue()
+						.then(onVenue, onError));
+				});
+				await Promise.all(promises);
+				self.setState({
+					ready: true,
+					band,
+					promises,
+					venues,
+					uploads,
+					gigMap,
+					gigs: rGigs
+				});
+			}
 		} else if (RESTModel.isValidId(venueId) &&
 			venueId !== null &&
 			venueId !== undefined) {
@@ -165,9 +167,9 @@ export default class ShowTable
 			Array.isArray(idTable) &&
 			idTable.every(RESTModel.isValidId)
 		) {
-			const rGigs = await Promise.all(
+			const rGigs: Gig[] = (await Promise.all(
 				idTable.map((id: string) => Gig.findById(id))
-			);
+			)).filter((v) => v !== null) as Gig[];
 			rGigs.forEach((gig: Gig) => {
 				gigMap.set(gig.id, gig);
 				if (gig && Array.isArray(gig.bands)) {
