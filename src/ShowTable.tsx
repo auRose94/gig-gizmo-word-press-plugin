@@ -2,7 +2,6 @@
 	Created by corynull on March 18 2018 Sun 7:25 AM
 */
 
-import moment from "moment";
 import React from "react";
 
 import {
@@ -136,33 +135,35 @@ export default class ShowTable
 			venueId !== null &&
 			venueId !== undefined) {
 			const venue = await Venue.findById(venueId);
-			venues.set(venueId, venue);
-			const rGigs = await venue.getGigs();
-			rGigs.forEach((gig: Gig) => {
-				gigMap.set(gig.id, gig);
-				if (gig && Array.isArray(gig.bands)) {
-					gig.bands.forEach((gigBandId: string) => {
-						if (!bands.has(gigBandId)) {
-							const promise = Band.findById(gigBandId)
-								.then(
-									onBand,
-									onError
-								);
-							promises.push(promise);
-							bands.set(gigBandId, null);
-						}
-					});
-				}
-			});
-			await Promise.all(promises);
-			self.setState({
-				ready: true,
-				venue,
-				promises,
-				uploads,
-				gigMap,
-				gigs: rGigs
-			});
+			if (venue) {
+				venues.set(venueId, venue);
+				const rGigs: Gig[] = await venue.getGigs();
+				rGigs.forEach((gig: Gig) => {
+					gigMap.set(gig.id, gig);
+					if (gig && Array.isArray(gig.bands)) {
+						gig.bands.forEach((gigBandId: string) => {
+							if (!bands.has(gigBandId)) {
+								const promise = Band.findById(gigBandId)
+									.then(
+										onBand,
+										onError
+									);
+								promises.push(promise);
+								bands.set(gigBandId, null);
+							}
+						});
+					}
+				});
+				await Promise.all(promises);
+				self.setState({
+					ready: true,
+					venue,
+					promises,
+					uploads,
+					gigMap,
+					gigs: rGigs
+				});
+			}
 		} else if (
 			Array.isArray(idTable) &&
 			idTable.every(RESTModel.isValidId)
@@ -206,25 +207,15 @@ export default class ShowTable
 			gigs
 		} = this.state;
 		if (order === "desc") {
-			gigs = gigs.sort((a: any, b: any) => {
+			gigs = gigs.sort((a, b) => {
 				const bValue = b[orderBy];
 				const aValue = a[orderBy];
-				const maybeDateB = moment(bValue);
-				const maybeDateA = moment(aValue);
-				if (maybeDateB.isValid() && maybeDateA.isValid()) {
-					return maybeDateB.isBefore(maybeDateA) ? -1 : 1;
-				}
 				return bValue < aValue ? -1 : 1;
 			});
 		} else {
-			gigs = gigs.sort((a: any, b: any) => {
+			gigs = gigs.sort((a, b) => {
 				const bValue = b[orderBy];
 				const aValue = a[orderBy];
-				const maybeDateB = moment(bValue);
-				const maybeDateA = moment(aValue);
-				if (maybeDateB.isValid() && maybeDateA.isValid()) {
-					return maybeDateB.isAfter(maybeDateA) ? -1 : 1;
-				}
 				return bValue > aValue ? -1 : 1;
 			});
 		}

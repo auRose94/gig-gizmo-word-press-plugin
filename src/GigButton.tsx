@@ -1,7 +1,6 @@
 import {
 	Gig
 } from "gig-gizmo-sdk";
-import moment from "moment";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -60,9 +59,9 @@ export default class GigButton
 		const gigId = this.props.gigId || null;
 		const onClick = (event: any) => self.handleClick(event);
 		if (gig) {
-			const venueStartTime = moment(gig.startTime);
-			const venueStopTime = moment(gig.stopTime);
-			const time = `${venueStartTime.format("LLL")} - ${venueStopTime.format("LT")}`;
+			const venueStartTime = gig.startTime;
+			const venueStopTime = gig.stopTime;
+			const time = `${venueStartTime.toLocaleString()} - ${venueStopTime.toLocaleTimeString()}`;
 			return (
 					<Button
 						href={`${server}/gig/${gig._id}`}

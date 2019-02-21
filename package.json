@@ -12,15 +12,13 @@
 		"prepare": "webpack --config webpack.config.js --release"
 	},
 	"dependencies": {
-		"@types/react": "^16.8.3",
+		"@types/react": "^16.8.4",
 		"@types/react-bootstrap": "^0.32.17",
 		"@types/react-dom": "^16.8.2",
 		"gig-gizmo-sdk": "git+https://github.com/Halsys/gig-gizmo-sdk.git",
-		"moment": "^2.24.0",
 		"react": "^16.8.2",
 		"react-bootstrap": "^0.32.4",
-		"react-dom": "^16.8.2",
-		"source-map-support": "^0.5.10"
+		"react-dom": "^16.8.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.3.3",

@@ -1,5 +1,4 @@
 import { RESTModel } from "gig-gizmo-sdk";
-import moment from "moment";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
@@ -68,19 +67,20 @@ export default class ModelTable
 			const isButton = typeof onClick === "function";
 			const isFormatted = typeof format === "function";
 			const value = item[id];
+			const valueType = typeof value;
 			const isDate =
-				(
-					(typeof value === "string" && !isNaN(Date.parse(value))) ||
-					(typeof value === "number")
-				) && moment(value)
-				.isValid();
+				((valueType === "string" || valueType === "number") &&
+					!isNaN(Date.parse(value))) ||
+				(value instanceof Date && !isNaN(value.valueOf()));
 			const key = `${item._id}${id}`;
 			let content = null;
 			if (isFormatted && format) {
 				content = format(item, value);
 			} else if (isDate) {
-				content = moment(value)
-					.format("LLL");
+				const date = (value instanceof Date && !isNaN(value.valueOf())) ?
+					value :
+					new Date(value);
+				content = date.toLocaleString();
 			} else {
 				content = `${value}`;
 			}
