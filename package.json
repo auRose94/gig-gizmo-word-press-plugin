@@ -1,15 +1,16 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"license": "MIT",
 	"main": "./dist/index.js",
+	"typings": "./typings/index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Halsys/gig-gizmo-word-press-plugin.git"
 	},
 	"scripts": {
 		"start": "webpack --config webpack.config.js",
-		"prepare": "webpack --config webpack.config.js --release"
+		"build": "webpack --config webpack.config.js --release"
 	},
 	"dependencies": {
 		"@types/react": "^16.8.4",
