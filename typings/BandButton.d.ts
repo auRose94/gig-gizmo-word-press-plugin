@@ -18,5 +18,5 @@ export default class BandButton
 	public constructor(props: BandButtonProps);
 	public componentDidMount(): Promise<void>;
 	public handleClick(event: any): void;
-	public render(): React.ReactElement;
+	public render(): JSX.Element;
 }

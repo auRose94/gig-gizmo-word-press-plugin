@@ -30,5 +30,5 @@ export default class ModelTable extends React.Component<ModelTableProps, {}> {
 	public isSelected(id: string): boolean;
 	public renderRow(item: any): React.ReactElement;
 	public renderTableHeader(): React.ReactElement;
-	public render(): React.ReactElement;
+	public render(): JSX.Element;
 }

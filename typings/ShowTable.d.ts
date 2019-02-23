@@ -33,5 +33,5 @@ export default class ShowTable
 	public handleChangePage(_event: any, page: number): void;
 	public handleChangeRowsPerPage(_event: any, rowsPerPage: number): void;
 	public getColumnData(): ColumnData[];
-	public render(): React.ReactElement;
+	public render(): JSX.Element;
 }

@@ -18,5 +18,5 @@ export default class VenueButton
 	public constructor(props: VenueButtonProps);
 	public componentDidMount(): Promise<void>;
 	public handleClick(event: any): void;
-	public render(): React.ReactElement;
+	public render(): JSX.Element;
 }
