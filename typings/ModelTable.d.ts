@@ -28,7 +28,7 @@ interface ModelTableProps {
 
 export default class ModelTable extends React.Component<ModelTableProps, {}> {
 	public isSelected(id: string): boolean;
-	public renderRow(item: any): React.ReactElement;
-	public renderTableHeader(): React.ReactElement;
+	public renderRow(item: any): JSX.Element;
+	public renderTableHeader(): JSX.Element;
 	public render(): JSX.Element;
 }
