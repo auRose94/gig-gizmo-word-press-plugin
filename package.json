@@ -1,6 +1,6 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./typings/index.d.ts",
@@ -13,10 +13,12 @@
 		"build": "webpack --config webpack.config.js --release"
 	},
 	"dependencies": {
+		"axios": "^0.18.0",
 		"gig-gizmo-sdk": "git+https://github.com/Halsys/gig-gizmo-sdk.git",
 		"react": "^16.8.3",
 		"react-bootstrap": "^0.32.4",
-		"react-dom": "^16.8.3"
+		"react-dom": "^16.8.3",
+		"socket.io-client": "^2.2.0"
 	},
 	"peerDependency": {
 		"react": "^16.8.3",
@@ -27,8 +29,10 @@
 		"@types/react": "^16.8.4",
 		"@types/react-bootstrap": "^0.32.17",
 		"@types/react-dom": "^16.8.2",
+		"@types/socket.io-client": "^1.4.32",
 		"awesome-typescript-loader": "^5.2.1",
 		"css-loader": "^1.0.1",
+		"source-map-loader": "^0.2.4",
 		"style-loader": "^0.23.1",
 		"typescript": "^3.3.3333",
 		"uglifyjs-webpack-plugin": "^2.1.1",
