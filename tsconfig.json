@@ -30,7 +30,11 @@
 		"node_modules",
 		"dist",
 		"webpack",
-		"*.json"
+		"*.json",
+		".awcache"
 	],
-	"include": ["./src/**/*"]
+	"include": [
+		"./src/**/*",
+		"./typings/**/*"
+	]
 }

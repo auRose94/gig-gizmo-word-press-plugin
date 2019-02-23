@@ -1,3 +1,4 @@
+/// <reference lib="es2015" />
 import { Band, Gig, Upload, Venue } from "gig-gizmo-sdk";
 import * as React from "react";
 import { ColumnData, default as ModelTable } from "./ModelTable";
