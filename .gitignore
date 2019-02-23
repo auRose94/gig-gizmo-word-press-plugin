@@ -10,5 +10,6 @@ public/static
 .env.*.local
 src/**/*.js
 src/**/*.js.map
+.awcache
 
 dist/src/
