@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
-		"gig-gizmo-sdk": "github:Halsys/gig-gizmo-sdk#b0d3018",
+		"gig-gizmo-sdk": "github:Halsys/gig-gizmo-sdk#master",
 		"react": "^16.8.3",
 		"react-bootstrap": "^0.32.4",
 		"react-dom": "^16.8.3",
