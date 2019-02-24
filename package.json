@@ -1,6 +1,6 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.3.12",
+	"version": "0.3.13",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./typings/index.d.ts",
@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
-		"gig-gizmo-sdk": "git+https://github.com/Halsys/gig-gizmo-sdk.git",
+		"gig-gizmo-sdk": "git+https://github.com/Halsys/gig-gizmo-sdk.git#b0d3018dcca85593a2f78c754f776a60de7db433",
 		"react": "^16.8.3",
 		"react-bootstrap": "^0.32.4",
 		"react-dom": "^16.8.3",
