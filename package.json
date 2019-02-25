@@ -1,6 +1,6 @@
 {
 	"name": "gig-gizmo-word-press-plugin",
-	"version": "0.3.14",
+	"version": "0.3.15",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"typings": "./typings/index.d.ts",
