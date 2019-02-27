@@ -3,6 +3,7 @@ const isDebug = !process.argv.includes("--release");
 module.exports = {
 	mode: isDebug ? "development" : "production",
 
+	/*
 	externals: {
 		"react": "react",
 		"react-dom": "react-dom",
@@ -10,6 +11,7 @@ module.exports = {
 		"socket.io-client": "socket.io-client",
 		"axios": "axios"
 	},
+	*/
 
 	// Enable sourcemaps for debugging webpack's output.
 	devtool: "source-map",
