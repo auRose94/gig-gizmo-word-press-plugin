@@ -1,5 +1,5 @@
 import { Band, Upload } from "gig-gizmo-sdk";
-import * as React from "react";
+import React from "react";
 
 interface BandButtonState {
 	icon: Upload  | undefined | null;
@@ -13,7 +13,7 @@ export interface BandButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
-export default class BandButton
+export class BandButton
 	extends React.Component<BandButtonProps, BandButtonState> {
 	public constructor(props: BandButtonProps);
 	public componentDidMount(): Promise<void>;

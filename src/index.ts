@@ -1,8 +1,8 @@
 import "react";
-import { BandButtonProps, default as BandButton } from "./BandButton";
-import { default as GigButton, GigButtonProps } from "./GigButton";
-import { default as ShowTable, ShowTableProps } from "./ShowTable";
-import { default as VenueButton, VenueButtonProps } from "./VenueButton";
+import { BandButton, BandButtonProps } from "./BandButton";
+import { GigButton, GigButtonProps } from "./GigButton";
+import { ShowTable, ShowTableProps } from "./ShowTable";
+import { VenueButton, VenueButtonProps } from "./VenueButton";
 
 interface PluginConfig {
 	showTable: ShowTableProps;

@@ -1,5 +1,5 @@
 import { Upload, Venue } from "gig-gizmo-sdk";
-import * as React from "react";
+import React from "react";
 
 interface VenueButtonState {
 	icon: Upload | undefined | null;
@@ -13,7 +13,7 @@ export interface VenueButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
-export default class VenueButton
+export class VenueButton
 	extends React.Component<VenueButtonProps, VenueButtonState> {
 	public constructor(props: VenueButtonProps);
 	public componentDidMount(): Promise<void>;

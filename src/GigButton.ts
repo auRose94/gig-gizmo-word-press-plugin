@@ -17,7 +17,7 @@ export interface GigButtonState {
 	gig: Gig | undefined | null;
 }
 
-export default class GigButton
+export class GigButton
 	extends Plugin.React.Component<GigButtonProps, GigButtonState> {
 
 	public constructor(props: GigButtonProps) {

@@ -22,7 +22,7 @@ export interface BandButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
-export default class BandButton
+export class BandButton
 	extends Plugin.React.Component<BandButtonProps, BandButtonState> {
 
 	public constructor(props: BandButtonProps) {

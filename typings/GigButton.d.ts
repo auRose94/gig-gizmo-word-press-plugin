@@ -1,5 +1,5 @@
 import { Gig } from "gig-gizmo-sdk";
-import * as React from "react";
+import React from "react";
 
 interface GigButtonState {
 	gig: Gig | undefined | null;
@@ -11,7 +11,7 @@ export interface GigButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
-export default class GigButton
+export class GigButton
 	extends React.Component<GigButtonProps, GigButtonState> {
 	public constructor(props: GigButtonProps);
 	public componentDidMount(): Promise<void>;

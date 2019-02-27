@@ -8,7 +8,7 @@ import Tooltip from "react-bootstrap/lib/Tooltip";
 
 import Plugin from "./index";
 import "./styles/table.css";
-import TablePagination from "./TablePagination";
+import { TablePagination } from "./TablePagination";
 
 export interface ColumnData {
 	onClick: ((event: any, item: any) => void) | null;
@@ -33,7 +33,7 @@ interface ModelTableProps {
 	onRowsPerPageChange: (event: any, rows: number) => void;
 }
 
-export default class ModelTable
+export class ModelTable
 	extends Plugin.React.Component<ModelTableProps, {}> {
 
 	public isSelected(id: string) {

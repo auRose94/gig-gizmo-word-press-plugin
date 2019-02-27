@@ -1,7 +1,7 @@
 /// <reference lib="es2015" />
 import { Band, Gig, Upload, Venue } from "gig-gizmo-sdk";
-import * as React from "react";
-import { ColumnData, default as ModelTable } from "./ModelTable";
+import React from "react";
+import { ColumnData, ModelTable } from "./ModelTable";
 
 export interface ShowTableProps {
 	band: string | undefined | null;
@@ -25,7 +25,7 @@ interface ShowTableState {
 	ready: boolean;
 }
 
-export default class ShowTable
+export class ShowTable
 	extends React.Component<ShowTableProps, ShowTableState> {
 	public constructor(props: ShowTableProps);
 	public componentDidMount(): Promise<void>;

@@ -10,12 +10,12 @@ import {
 	Venue
 } from "gig-gizmo-sdk";
 
-import BandButton from "./BandButton";
-import GigButton from "./GigButton";
+import { BandButton } from "./BandButton";
+import { GigButton } from "./GigButton";
 import Plugin from "./index";
-import { ColumnData, default as ModelTable } from "./ModelTable";
+import { ColumnData, ModelTable } from "./ModelTable";
 import "./styles/calendar.css";
-import VenueButton from "./VenueButton";
+import { VenueButton } from "./VenueButton";
 
 export interface ShowTableProps {
 	band: string | undefined | null;
@@ -39,7 +39,7 @@ interface ShowTableState {
 	ready: boolean;
 }
 
-export default class ShowTable
+export class ShowTable
 	extends Plugin.React.Component<ShowTableProps, ShowTableState> {
 	public props: ShowTableProps;
 	public state: ShowTableState;

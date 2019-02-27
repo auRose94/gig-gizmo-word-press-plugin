@@ -1,7 +1,7 @@
 import {
 	RESTModel
 } from "gig-gizmo-sdk";
-import * as React from "react";
+import React from "react";
 
 export interface ColumnData {
 	onClick: ((event: any, item: any) => void) | null;
@@ -26,7 +26,7 @@ interface ModelTableProps {
 	onRowsPerPageChange: (event: any, rows: number) => void;
 }
 
-export default class ModelTable extends React.Component<ModelTableProps, {}> {
+export class ModelTable extends React.Component<ModelTableProps, {}> {
 	public isSelected(id: string): boolean;
 	public renderRow(item: any): JSX.Element;
 	public renderTableHeader(): JSX.Element;

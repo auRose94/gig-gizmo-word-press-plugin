@@ -16,7 +16,7 @@ interface TablePaginationProps {
 	onChangeRowsPerPage: (event: any, rows: number) => void;
 }
 
-export default class TablePagination
+export class TablePagination
 	extends Plugin.React.Component<TablePaginationProps> {
 
 	get pages() {

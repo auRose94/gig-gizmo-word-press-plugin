@@ -21,7 +21,7 @@ export interface VenueButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
-export default class VenueButton
+export class VenueButton
 	extends Plugin.React.Component<VenueButtonProps, VenueButtonState> {
 
 	public constructor(props: VenueButtonProps) {

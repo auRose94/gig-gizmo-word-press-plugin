@@ -1,34 +1,36 @@
-
-import { BandButtonProps, default as BandButton } from "./BandButton.d";
-import { default as GigButton, GigButtonProps } from "./GigButton.d";
-import { default as ShowTable, ShowTableProps } from "./ShowTable.d";
-import { default as VenueButton, VenueButtonProps } from "./VenueButton.d";
+import "react";
+import { BandButton, BandButtonProps } from "./BandButton";
+import { GigButton, GigButtonProps } from "./GigButton";
+import { ShowTable, ShowTableProps } from "./ShowTable";
+import { VenueButton, VenueButtonProps } from "./VenueButton";
 
 interface PluginConfig {
 	showTable: ShowTableProps;
 }
 
 export default class Plugin {
+	public static React: any;
+	public static ReactDOM: any;
 	public static Config: PluginConfig;
 	public static widgets: {
 		ShowTable: {
 			new: () => ({
-				render: (id: string, args: ShowTableProps) => HTMLElement;
+				render: (id: string, args: ShowTableProps) => JSX.Element;
 			});
 		};
 		BandButton: {
 			new: () => ({
-				render: (args: BandButtonProps) => HTMLElement;
+				render: (args: BandButtonProps) => JSX.Element;
 			});
 		};
 		VenueButton: {
 			new: () => ({
-				render: (args: VenueButtonProps) => HTMLElement;
+				render: (args: VenueButtonProps) => JSX.Element;
 			});
 		};
 		GigButton: {
 			new: () => ({
-				render: (args: GigButtonProps) => HTMLElement;
+				render: (args: GigButtonProps) => JSX.Element;
 			});
 		};
 	};
