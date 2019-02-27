@@ -33,8 +33,10 @@ interface ModelTableProps {
 	onRowsPerPageChange: (event: any, rows: number) => void;
 }
 
+const React = Plugin.React || import("react");
+
 export class ModelTable
-	extends Plugin.React.Component<ModelTableProps, {}> {
+	extends React.Component<ModelTableProps, {}> {
 
 	public isSelected(id: string) {
 		const selected = this.props.selected;
@@ -85,9 +87,9 @@ export class ModelTable
 				content = `${value}`;
 			}
 			if (isButton && onClick) {
-				return Plugin.React.createElement(
+				return React.createElement(
 					"td", { key, children: [
-						Plugin.React.createElement(
+						React.createElement(
 							Button, {
 								onClick: (event: any) => onClick(event, item),
 								children: content
@@ -96,23 +98,23 @@ export class ModelTable
 					]}
 				);
 			}
-			return Plugin.React.createElement(
+			return React.createElement(
 				"td", { key, children: [content] }
 			);
 		});
 		// TODO: Create classes for selected and unselected?
 
-		return Plugin.React.createElement(
+		return React.createElement(
 			"tr", {
 				"key": item._id,
 				"id": item._id,
 				"aria-checked": isSelected,
 				"children": [
 					...(selectable ? [
-						Plugin.React.createElement(
+						React.createElement(
 							"td", {
 								children: [
-									Plugin.React.createElement(
+									React.createElement(
 										Checkbox, {
 											checked: isSelected ? isSelected : undefined,
 											onClick: onSelectEvent
@@ -140,19 +142,19 @@ export class ModelTable
 		} = this.props;
 		const itemsLength = Array.isArray(models) ? models.length : null;
 		const numSelected = Array.isArray(selected) ? selected.length : null;
-		return Plugin.React.createElement(
+		return React.createElement(
 			"thead", {
 				children: [
-					Plugin.React.createElement(
+					React.createElement(
 						"tr", {
 							children: [
 								...(
 									typeof numSelected === "number" &&
 									typeof onSelectAll === "function" ?
-										[Plugin.React.createElement(
+										[React.createElement(
 											"th", {
 												children: [
-													Plugin.React.createElement(
+													React.createElement(
 														Checkbox, {
 															checked: numSelected === itemsLength,
 															onChange: (
@@ -181,24 +183,24 @@ export class ModelTable
 											if (showSort && !orderBool) {
 												tooltipString = "Sort ascending";
 											}
-											content = Plugin.React.createElement(
+											content = React.createElement(
 												OverlayTrigger, {
 													placement: "top",
-													overlay: Plugin.React.createElement(
+													overlay: React.createElement(
 														Tooltip, {
 															id: `${column.id}SortTooltip`,
 															children: tooltipString
 														}
 													),
 													children: [
-														Plugin.React.createElement(
+														React.createElement(
 															Button, {
 																bsStyle: "default",
 																onClick: (event: any) =>
 																	onRequestSort(event, orderBy, click),
 																children: [
 																	...(showSort ? [
-																		Plugin.React.createElement(
+																		React.createElement(
 																			Glyphicon, {
 																				glyph
 																			}
@@ -214,7 +216,7 @@ export class ModelTable
 										} else {
 											content = column.label;
 										}
-										return Plugin.React.createElement(
+										return React.createElement(
 											"th", {
 												key: column.id,
 												children: [content]
@@ -230,7 +232,7 @@ export class ModelTable
 		);
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const self = this;
 		const {
 			models,
@@ -244,13 +246,13 @@ export class ModelTable
 		const array = Array.from(models || []);
 		const arrayLength = array.length;
 		if (arrayLength === 0) {
-			return Plugin.React.createElement(
+			return React.createElement(
 				"div", {
 					children: [
-						Plugin.React.createElement(
+						React.createElement(
 							"h1", {children: ["Empty!"]}
 						),
-						Plugin.React.createElement(
+						React.createElement(
 							"p", {
 								children: [
 									"There's no point in showing a table if it's going to be empty."
@@ -273,20 +275,20 @@ export class ModelTable
 		const onRowsPerPageChangeCallback =
 			(event: any, value: number) =>
 				onRowsPerPageChange(event, value);
-		return Plugin.React.createElement(
+		return React.createElement(
 			Plugin.React.Fragment, {
 				children: [
-					Plugin.React.createElement(
+					React.createElement(
 						Table, {
 							children: [
 								this.renderTableHeader(),
-								Plugin.React.createElement(
+								React.createElement(
 									"tbody", { children: [rowElements] }
 								)
 							]
 						}
 					),
-					Plugin.React.createElement(
+					React.createElement(
 						TablePagination, {
 							page,
 							count: arrayLength,

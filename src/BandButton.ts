@@ -22,8 +22,10 @@ export interface BandButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
+const React = Plugin.React || import("react");
+
 export class BandButton
-	extends Plugin.React.Component<BandButtonProps, BandButtonState> {
+	extends React.Component<BandButtonProps, BandButtonState> {
 
 	public constructor(props: BandButtonProps) {
 		super(props);
@@ -65,7 +67,7 @@ export class BandButton
 		}
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const { bandId } = this.props;
 		const band = this.state.band || this.props.band || null;
 		const icon = this.state.icon || this.props.icon || null;
@@ -76,7 +78,7 @@ export class BandButton
 		if (band) {
 			let iconElement = null;
 			if (band.icon && icon) {
-				iconElement = Plugin.React.createElement(
+				iconElement = React.createElement(
 					"img", {
 						width: "32",
 						height: "32",
@@ -85,14 +87,14 @@ export class BandButton
 						src: icon.fileData
 					});
 			} else {
-				iconElement = Plugin.React.createElement(
+				iconElement = React.createElement(
 					Glyphicon, {
 						glyph: "",
 						className: "fa fa-music"
 					}
 				);
 			}
-			buttonElement = Plugin.React.createElement(
+			buttonElement = React.createElement(
 				Button, {
 					href: `${server}/band/${bandId}`,
 					className: "bandButton",
@@ -101,7 +103,7 @@ export class BandButton
 				}
 			);
 		} else {
-			buttonElement = Plugin.React.createElement(
+			buttonElement = React.createElement(
 				Button, {
 					href: `${server}/band/${bandId}`,
 					className: "bandButton",
@@ -111,14 +113,14 @@ export class BandButton
 			);
 		}
 		const description = band && band.description ? band.description : "Loading...";
-		const tooltip = Plugin.React.createElement(
+		const tooltip = React.createElement(
 			Tooltip, {
 				id: `${bandId}Tooltip`,
 				className: "bandTooltip",
 				children: htmlToText(description).slice(0, 256)
 			}
 		);
-		return Plugin.React.createElement(
+		return React.createElement(
 			OverlayTrigger, {
 				placement: "top",
 				overlay: tooltip,

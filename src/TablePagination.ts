@@ -16,8 +16,10 @@ interface TablePaginationProps {
 	onChangeRowsPerPage: (event: any, rows: number) => void;
 }
 
+const React = Plugin.React || import("react");
+
 export class TablePagination
-	extends Plugin.React.Component<TablePaginationProps> {
+	extends React.Component<TablePaginationProps> {
 
 	get pages() {
 		const { count, rowsPerPage } = this.props;
@@ -27,7 +29,7 @@ export class TablePagination
 
 	public renderRowPerPageItems() {
 		return this.props.rowsPerPageOptions.map((item: number) => {
-			return Plugin.React.createElement(
+			return React.createElement(
 				"option", {
 					key: item.toString(),
 					value: item,
@@ -41,7 +43,7 @@ export class TablePagination
 		const items = [];
 		for (let i = 0; i < this.pages; i++) {
 			items.push(
-				Plugin.React.createElement(
+				React.createElement(
 					"option", {
 						key: i,
 						value: i,
@@ -63,7 +65,7 @@ export class TablePagination
 		onChangePage(event, Math.max(0, page - 1));
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const self = this;
 		const { rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
 		const onRowsPerPageChange =
@@ -72,10 +74,10 @@ export class TablePagination
 			(event: any) => onChangePage(event, event.target.value);
 		const onNextPage = (event: any) => self.nextPage(event);
 		const onLastPage = (event: any) => self.lastPage(event);
-		return Plugin.React.createElement(
+		return React.createElement(
 			Pager, {
 				children: [
-					Plugin.React.createElement(
+					React.createElement(
 						Pager.Item, {
 							previous: true,
 							onClick: onLastPage,
@@ -85,23 +87,23 @@ export class TablePagination
 							]
 						}
 					),
-					Plugin.React.createElement(
+					React.createElement(
 						Form, {
 							inline: true,
 							className: "pagination-settings-container",
 							children: [
-								Plugin.React.createElement(
+								React.createElement(
 									FormGroup, {
 										controlId: "page",
 										children: [
-											Plugin.React.createElement(
+											React.createElement(
 												ControlLabel, {
 													children: [
 														"Page"
 													]
 												}
 											),
-											Plugin.React.createElement(
+											React.createElement(
 												FormControl, {
 													type: "select",
 													componentClass: "select",
@@ -113,18 +115,18 @@ export class TablePagination
 										]
 									}
 								),
-								Plugin.React.createElement(
+								React.createElement(
 									FormGroup, {
 										controlId: "rowsPerPage",
 										children: [
-											Plugin.React.createElement(
+											React.createElement(
 												ControlLabel, {
 													children: [
 														"Items Per Page"
 													]
 												}
 											),
-											Plugin.React.createElement(
+											React.createElement(
 												FormControl, {
 													type: "select",
 													componentClass: "select",
@@ -139,7 +141,7 @@ export class TablePagination
 							]
 						}
 					),
-					Plugin.React.createElement(
+					React.createElement(
 						Pager.Item, {
 							next: true,
 							onClick: onNextPage,

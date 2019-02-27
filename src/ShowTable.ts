@@ -39,8 +39,10 @@ interface ShowTableState {
 	ready: boolean;
 }
 
+const React = Plugin.React || import("react");
+
 export class ShowTable
-	extends Plugin.React.Component<ShowTableProps, ShowTableState> {
+	extends React.Component<ShowTableProps, ShowTableState> {
 	public props: ShowTableProps;
 	public state: ShowTableState;
 
@@ -249,7 +251,7 @@ export class ShowTable
 			id: "startTime",
 			label: "Event",
 			format: (n: Gig): any => {
-				return Plugin.React.createElement(
+				return React.createElement(
 					GigButton, {
 						gigId: n._id,
 						gig: n,
@@ -271,7 +273,7 @@ export class ShowTable
 							.map((band: Band | null) => {
 								if (!band) { return null; }
 								const icon: Upload | undefined | null = band.icon ? uploads.get(band.icon) : null;
-								return Plugin.React.createElement(
+								return React.createElement(
 									BandButton, {
 										band,
 										key: band._id,
@@ -282,7 +284,7 @@ export class ShowTable
 								);
 							});
 					} else {
-						return Plugin.React.createElement("span", { content: ["TBA"] });
+						return React.createElement("span", { content: ["TBA"] });
 					}
 				}
 			});
@@ -298,7 +300,7 @@ export class ShowTable
 						vId ? venues.get(vId) : null;
 					const icon: Upload | undefined | null =
 						venue && venue.icon ? uploads.get(venue.icon || "") : null;
-					return Plugin.React.createElement(
+					return React.createElement(
 						VenueButton, {
 							venue,
 							key: vId,
@@ -313,7 +315,7 @@ export class ShowTable
 		return columnData;
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const self = this;
 		const {
 			gigs,
@@ -327,7 +329,7 @@ export class ShowTable
 		const columnData = this.getColumnData();
 
 		if (ready) {
-			return Plugin.React.createElement(
+			return React.createElement(
 				ModelTable, {
 					onSelect: null,
 					onSelectAll: null,
@@ -349,6 +351,6 @@ export class ShowTable
 			);
 		}
 		// TODO: return nothing and wait?
-		return Plugin.React.createElement("div");
+		return React.createElement("div");
 	}
 }

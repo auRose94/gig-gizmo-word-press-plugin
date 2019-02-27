@@ -17,8 +17,10 @@ export interface GigButtonState {
 	gig: Gig | undefined | null;
 }
 
+const React = Plugin.React || import("react");
+
 export class GigButton
-	extends Plugin.React.Component<GigButtonProps, GigButtonState> {
+	extends React.Component<GigButtonProps, GigButtonState> {
 
 	public constructor(props: GigButtonProps) {
 		super(props);
@@ -53,7 +55,7 @@ export class GigButton
 							}
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const self = this;
 		const gig = this.state.gig || this.props.gig || null;
 		const gigId = this.props.gigId || null;
@@ -62,13 +64,13 @@ export class GigButton
 			const venueStartTime = gig.startTime;
 			const venueStopTime = gig.stopTime;
 			const time = `${venueStartTime.toLocaleString()} - ${venueStopTime.toLocaleTimeString()}`;
-			return Plugin.React.createElement(
+			return React.createElement(
 				Button, {
 					href: `${server}/gig/${gig._id}`,
 					className: "GigButton",
 					onClick,
 					children: [
-						Plugin.React.createElement(
+						React.createElement(
 							Glyphicon, {
 								glyph: "",
 								className: "fa fa-calendar"
@@ -79,13 +81,13 @@ export class GigButton
 				}
 			);
 		}
-		return Plugin.React.createElement(
+		return React.createElement(
 			Button, {
 				href: `${server}/gig/${gig._id}`,
 				className: "GigButton",
 				onClick,
 				children: [
-					Plugin.React.createElement(
+					React.createElement(
 						Glyphicon, {
 							glyph: "",
 							className: "fa fa-calendar"

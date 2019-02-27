@@ -21,8 +21,10 @@ export interface VenueButtonProps {
 	onClick: ((event: any) => void) | null;
 }
 
+const React = Plugin.React || import("react");
+
 export class VenueButton
-	extends Plugin.React.Component<VenueButtonProps, VenueButtonState> {
+	extends React.Component<VenueButtonProps, VenueButtonState> {
 
 	public constructor(props: VenueButtonProps) {
 		super(props);
@@ -64,7 +66,7 @@ export class VenueButton
 		}
 	}
 
-	public render(): React.ReactElement {
+	public render(): JSX.Element {
 		const { venueId } = this.props;
 		const self = this;
 		const venue = this.state.venue || this.props.venue || null;
@@ -74,7 +76,7 @@ export class VenueButton
 		if (venue) {
 			let iconElement = null;
 			if (venue.icon && icon) {
-				iconElement = Plugin.React.createElement(
+				iconElement = React.createElement(
 					"img", {
 						width: "32",
 						height: "32",
@@ -84,7 +86,7 @@ export class VenueButton
 					}
 				);
 			} else {
-				iconElement = Plugin.React.createElement(
+				iconElement = React.createElement(
 					Glyphicon, {
 						glyph: "",
 						className: "fa fa-glass"
@@ -92,7 +94,7 @@ export class VenueButton
 				);
 			}
 
-			buttonElement = Plugin.React.createElement(
+			buttonElement = React.createElement(
 				Button, {
 					className: "VenueButton",
 					href: `${server}/venue/${venueId}`,
@@ -104,7 +106,7 @@ export class VenueButton
 				}
 			);
 		} else {
-			buttonElement = Plugin.React.createElement(
+			buttonElement = React.createElement(
 				Button, {
 					className: "VenueButton",
 					href: `${server}/venue/${venueId}`,
@@ -115,14 +117,14 @@ export class VenueButton
 		}
 		const description =
 			venue && venue.description ? venue.description : "Loading...";
-		const tooltip = Plugin.React.createElement(
+		const tooltip = React.createElement(
 			Tooltip, {
 				id: `${venueId}Tooltip`,
 				className: "VenueButtonTooltip",
 				children: [htmlToText(description).slice(0, 256)]
 			}
 		);
-		return Plugin.React.createElement(
+		return React.createElement(
 			OverlayTrigger, {
 				placement: "top",
 				overlay: tooltip,
