@@ -2,8 +2,6 @@
 	Created by corynull on March 18 2018 Sun 7:25 AM
 */
 
-import React from "react";
-
 import {
 	Band,
 	Gig,
@@ -14,6 +12,7 @@ import {
 
 import BandButton from "./BandButton";
 import GigButton from "./GigButton";
+import Plugin from "./index";
 import { ColumnData, default as ModelTable } from "./ModelTable";
 import "./styles/calendar.css";
 import VenueButton from "./VenueButton";
@@ -41,7 +40,7 @@ interface ShowTableState {
 }
 
 export default class ShowTable
-	extends React.Component<ShowTableProps, ShowTableState> {
+	extends Plugin.React.Component<ShowTableProps, ShowTableState> {
 	public props: ShowTableProps;
 	public state: ShowTableState;
 
@@ -250,8 +249,12 @@ export default class ShowTable
 			id: "startTime",
 			label: "Event",
 			format: (n: Gig): any => {
-				return (
-					<GigButton gigId={n._id} gig={n} onClick={null}/>
+				return Plugin.React.createElement(
+					GigButton, {
+						gigId: n._id,
+						gig: n,
+						onClick: null
+					}
 				);
 			}
 		}];
@@ -268,17 +271,18 @@ export default class ShowTable
 							.map((band: Band | null) => {
 								if (!band) { return null; }
 								const icon: Upload | undefined | null = band.icon ? uploads.get(band.icon) : null;
-								return (
-									<BandButton
-										band={band}
-										key={band._id}
-										bandId={band._id}
-										onClick={null}
-										icon={icon}
-									/>);
+								return Plugin.React.createElement(
+									BandButton, {
+										band,
+										key: band._id,
+										bandId: band._id,
+										onClick: null,
+										icon
+									}
+								);
 							});
 					} else {
-						return (<span>TBA</span>);
+						return Plugin.React.createElement("span", { content: ["TBA"] });
 					}
 				}
 			});
@@ -294,14 +298,14 @@ export default class ShowTable
 						vId ? venues.get(vId) : null;
 					const icon: Upload | undefined | null =
 						venue && venue.icon ? uploads.get(venue.icon || "") : null;
-					return (
-						<VenueButton
-							venue={venue}
-							key={vId}
-							venueId={vId}
-							onClick={null}
-							icon={icon}
-						/>
+					return Plugin.React.createElement(
+						VenueButton, {
+							venue,
+							key: vId,
+							venueId: vId,
+							onClick: null,
+							icon
+						}
 					);
 				}
 			});
@@ -323,31 +327,28 @@ export default class ShowTable
 		const columnData = this.getColumnData();
 
 		if (ready) {
-			return (
-				<ModelTable
-					onSelect={null}
-					onSelectAll={null}
-					rowsPerPageOptions={[10, 25, 50, 100]}
-					columnData={columnData}
-					order={order}
-					orderBy={orderBy}
-					models={gigs}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					selected={null}
-					onRequestSort={(event: any, ob: string, o: string) =>
-						self.handleRequestSort(event, ob, o)
-					}
-					onPageChange={(event: any, p: number) =>
-						self.handleChangePage(event, p)
-					}
-					onRowsPerPageChange={(event: any, option: number) =>
+			return Plugin.React.createElement(
+				ModelTable, {
+					onSelect: null,
+					onSelectAll: null,
+					rowsPerPageOptions: [10, 25, 50, 100],
+					columnData,
+					order,
+					orderBy,
+					models: gigs,
+					rowsPerPage,
+					page,
+					selected: null,
+					onRequestSort: (event: any, ob: string, o: string) =>
+						self.handleRequestSort(event, ob, o),
+					onPageChange: (event: any, p: number) =>
+						self.handleChangePage(event, p),
+					onRowsPerPageChange: (event: any, option: number) =>
 						self.handleChangeRowsPerPage(event, option)
-					}
-					/>
+				}
 			);
 		}
 		// TODO: return nothing and wait?
-		return <div/>;
+		return Plugin.React.createElement("div");
 	}
 }

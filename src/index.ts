@@ -1,5 +1,4 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import "react";
 import { BandButtonProps, default as BandButton } from "./BandButton";
 import { default as GigButton, GigButtonProps } from "./GigButton";
 import { default as ShowTable, ShowTableProps } from "./ShowTable";
@@ -10,6 +9,8 @@ interface PluginConfig {
 }
 
 export default class Plugin {
+	public static React: any = import("react");
+	public static ReactDOM: any = import("react-dom");
 	public static Config: PluginConfig = {
 		showTable: {
 			band: null,
@@ -24,9 +25,8 @@ export default class Plugin {
 					const element = id ?
 						document.getElementById(id) :
 						null;
-					const component =
-						<ShowTable {...args} />;
-					ReactDOM.render(component, element);
+					const component = Plugin.React.createElement(ShowTable, args);
+					Plugin.ReactDOM.render(component, element);
 					return element;
 				}
 			})
@@ -35,9 +35,8 @@ export default class Plugin {
 			new: () => ({
 				render: (args: BandButtonProps) => {
 					const element = document.createElement("div");
-					const component =
-						<BandButton {...args} />;
-					ReactDOM.render(component, element);
+					const component = Plugin.React.createElement(BandButton, args);
+					Plugin.ReactDOM.render(component, element);
 					return element;
 				}
 			})
@@ -46,9 +45,8 @@ export default class Plugin {
 			new: () => ({
 				render: (args: VenueButtonProps) => {
 					const element = document.createElement("div");
-					const component =
-						<VenueButton {...args} />;
-					ReactDOM.render(component, element);
+					const component = Plugin.React.createElement(VenueButton, args);
+					Plugin.ReactDOM.render(component, element);
 					return element;
 				}
 			})
@@ -57,9 +55,8 @@ export default class Plugin {
 			new: () => ({
 				render: (args: GigButtonProps) => {
 					const element = document.createElement("div");
-					const component: React.ReactElement =
-						<GigButton {...args} />;
-					ReactDOM.render(component, element);
+					const component = Plugin.React.createElement(GigButton, args);
+					Plugin.ReactDOM.render(component, element);
 					return element;
 				}
 			})

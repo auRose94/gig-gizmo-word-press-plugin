@@ -1,11 +1,11 @@
 import {
 	Gig
 } from "gig-gizmo-sdk";
-import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { server } from "./config";
+import Plugin from "./index";
 
 export interface GigButtonProps {
 	gigId: string;
@@ -18,7 +18,7 @@ export interface GigButtonState {
 }
 
 export default class GigButton
-	extends React.Component<GigButtonProps, GigButtonState> {
+	extends Plugin.React.Component<GigButtonProps, GigButtonState> {
 
 	public constructor(props: GigButtonProps) {
 		super(props);
@@ -62,26 +62,38 @@ export default class GigButton
 			const venueStartTime = gig.startTime;
 			const venueStopTime = gig.stopTime;
 			const time = `${venueStartTime.toLocaleString()} - ${venueStopTime.toLocaleTimeString()}`;
-			return (
-					<Button
-						href={`${server}/gig/${gig._id}`}
-						className="GigButton"
-						onClick={onClick}
-					>
-						<Glyphicon glyph="" className="fa fa-calendar" />
-						{time}
-					</Button>
-				);
+			return Plugin.React.createElement(
+				Button, {
+					href: `${server}/gig/${gig._id}`,
+					className: "GigButton",
+					onClick,
+					children: [
+						Plugin.React.createElement(
+							Glyphicon, {
+								glyph: "",
+								className: "fa fa-calendar"
+							}
+						),
+						time
+					]
+				}
+			);
 		}
-		return (
-			<Button
-				href={`${server}/gig/${gigId}`}
-				className="GigButton"
-				onClick={onClick}
-			>
-				<Glyphicon glyph="" className="fa fa-calendar" />
-				{gigId}
-			</Button>
+		return Plugin.React.createElement(
+			Button, {
+				href: `${server}/gig/${gig._id}`,
+				className: "GigButton",
+				onClick,
+				children: [
+					Plugin.React.createElement(
+						Glyphicon, {
+							glyph: "",
+							className: "fa fa-calendar"
+						}
+					),
+					gigId
+				]
+			}
 		);
 	}
 }

@@ -1,11 +1,12 @@
-import { Band, Upload } from "gig-gizmo-sdk";
-import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
+import { Band, Upload } from "gig-gizmo-sdk";
+
 import { server } from "./config";
+import Plugin from "./index";
 import { htmlToText } from "./shared";
 import "./styles/BandButton.css";
 
@@ -22,7 +23,7 @@ export interface BandButtonProps {
 }
 
 export default class BandButton
-	extends React.Component<BandButtonProps, BandButtonState> {
+	extends Plugin.React.Component<BandButtonProps, BandButtonState> {
 
 	public constructor(props: BandButtonProps) {
 		super(props);
@@ -75,47 +76,54 @@ export default class BandButton
 		if (band) {
 			let iconElement = null;
 			if (band.icon && icon) {
-				iconElement = (
-					<img
-						width="32"
-						height="32"
-						alt="⚠"
-						className="bandIcon"
-						src={icon.fileData}
-					/>
+				iconElement = Plugin.React.createElement(
+					"img", {
+						width: "32",
+						height: "32",
+						alt: "⚠",
+						className: "bandIcon",
+						src: icon.fileData
+					});
+			} else {
+				iconElement = Plugin.React.createElement(
+					Glyphicon, {
+						glyph: "",
+						className: "fa fa-music"
+					}
 				);
-			} else { iconElement = <Glyphicon glyph="" className="fa fa-music" />; }
-			buttonElement = (
-				<Button
-					href={`${server}/band/${bandId}`}
-					className="bandButton"
-					onClick={onClick}
-				>
-					{iconElement}
-					{band.name}
-				</Button>
+			}
+			buttonElement = Plugin.React.createElement(
+				Button, {
+					href: `${server}/band/${bandId}`,
+					className: "bandButton",
+					onClick,
+					children: [iconElement, band.name]
+				}
 			);
 		} else {
-			buttonElement = (
-				<Button
-					href={`${server}/band/${bandId}`}
-					className="bandButton"
-					onClick={onClick}
-				>
-					{bandId}
-				</Button>
+			buttonElement = Plugin.React.createElement(
+				Button, {
+					href: `${server}/band/${bandId}`,
+					className: "bandButton",
+					onClick,
+					children: [bandId]
+				}
 			);
 		}
 		const description = band && band.description ? band.description : "Loading...";
-		const tooltip = (
-			<Tooltip id={`${bandId}Tooltip`} className="bandTooltip">
-				{htmlToText(description).slice(0, 256)}
-			</Tooltip>
+		const tooltip = Plugin.React.createElement(
+			Tooltip, {
+				id: `${bandId}Tooltip`,
+				className: "bandTooltip",
+				children: htmlToText(description).slice(0, 256)
+			}
 		);
-		return (
-			<OverlayTrigger placement="top" overlay={tooltip}>
-				{buttonElement}
-			</OverlayTrigger>
+		return Plugin.React.createElement(
+			OverlayTrigger, {
+				placement: "top",
+				overlay: tooltip,
+				children: buttonElement
+			}
 		);
 	}
 }

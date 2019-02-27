@@ -23,7 +23,7 @@ module.exports = {
 		rules: [
 			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
 			{
-				test: /\.tsx?$/,
+				test: /\.ts[x]?$/,
 				loader: "awesome-typescript-loader",
 				options: {
 					usePrecompiledFiles: true,
@@ -58,7 +58,7 @@ module.exports = {
 		]
 	},
 
-	entry: "./src/index.tsx",
+	entry: "./src/index.ts",
 
 	output: {
 		libraryTarget: "this",

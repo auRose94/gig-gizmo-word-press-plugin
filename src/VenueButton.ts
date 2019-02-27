@@ -1,11 +1,11 @@
 import { Upload, Venue } from "gig-gizmo-sdk";
-import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
 import { server } from "./config";
+import Plugin from "./index";
 import { htmlToText } from "./shared";
 import "./styles/VenueButton.css";
 
@@ -22,7 +22,7 @@ export interface VenueButtonProps {
 }
 
 export default class VenueButton
-	extends React.Component<VenueButtonProps, VenueButtonState> {
+	extends Plugin.React.Component<VenueButtonProps, VenueButtonState> {
 
 	public constructor(props: VenueButtonProps) {
 		super(props);
@@ -74,46 +74,60 @@ export default class VenueButton
 		if (venue) {
 			let iconElement = null;
 			if (venue.icon && icon) {
-				iconElement = (
-					<img
-						width="32"
-						height="32"
-						alt="⚠"
-						className="VenueButtonIcon"
-						src={icon.fileData}
-					/>
+				iconElement = Plugin.React.createElement(
+					"img", {
+						width: "32",
+						height: "32",
+						alt: "⚠",
+						className: "VenueButtonIcon",
+						src: icon.fileData
+					}
 				);
-			} else { iconElement = <Glyphicon glyph="" className="fa fa-glass" />; }
+			} else {
+				iconElement = Plugin.React.createElement(
+					Glyphicon, {
+						glyph: "",
+						className: "fa fa-glass"
+					}
+				);
+			}
 
-			buttonElement = (
-				<Button
-					className="VenueButton"
-					href={`${server}/venue/${venueId}`}
-					onClick={onClick}
-				>
-					{iconElement}
-					{venue.name}
-				</Button>
+			buttonElement = Plugin.React.createElement(
+				Button, {
+					className: "VenueButton",
+					href: `${server}/venue/${venueId}`,
+					onClick,
+					children: [
+						iconElement,
+						venue.name
+					]
+				}
 			);
 		} else {
-			buttonElement = (
-				<Button
-					className="VenueButton"
-					href={`${server}/venue/${venueId}`}
-					onClick={onClick}
-				>{venueId}</Button>
+			buttonElement = Plugin.React.createElement(
+				Button, {
+					className: "VenueButton",
+					href: `${server}/venue/${venueId}`,
+					onClick,
+					children: [venueId]
+				}
 			);
 		}
-		const description = venue && venue.description ? venue.description : "Loading...";
-		const tooltip = (
-			<Tooltip id={`${venueId}Tooltip`} className="VenueButtonTooltip">
-				{htmlToText(description).slice(0, 256)}
-			</Tooltip>
+		const description =
+			venue && venue.description ? venue.description : "Loading...";
+		const tooltip = Plugin.React.createElement(
+			Tooltip, {
+				id: `${venueId}Tooltip`,
+				className: "VenueButtonTooltip",
+				children: [htmlToText(description).slice(0, 256)]
+			}
 		);
-		return (
-			<OverlayTrigger placement="top" overlay={tooltip}>
-				{buttonElement}
-			</OverlayTrigger>
+		return Plugin.React.createElement(
+			OverlayTrigger, {
+				placement: "top",
+				overlay: tooltip,
+				children: [buttonElement]
+			}
 		);
 	}
 }
