@@ -1,4 +1,3 @@
-import "react";
 import { BandButton, BandButtonProps } from "./BandButton";
 import { GigButton, GigButtonProps } from "./GigButton";
 import { ShowTable, ShowTableProps } from "./ShowTable";
@@ -9,8 +8,8 @@ interface PluginConfig {
 }
 
 export default class Plugin {
-	public static React: any = import("react");
-	public static ReactDOM: any = import("react-dom");
+	public static React: any = null;
+	public static ReactDOM: any = null;
 	public static Config: PluginConfig = {
 		showTable: {
 			band: null,

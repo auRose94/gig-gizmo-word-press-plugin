@@ -1,4 +1,3 @@
-import "react";
 import { BandButton, BandButtonProps } from "./BandButton";
 import { GigButton, GigButtonProps } from "./GigButton";
 import { ShowTable, ShowTableProps } from "./ShowTable";
