@@ -1,11 +1,11 @@
 import { Upload, Venue } from "gig-gizmo-sdk";
+import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
 import { server } from "./config";
-import Plugin from "./index";
 import { htmlToText } from "./shared";
 import "./styles/VenueButton.css";
 
@@ -20,8 +20,6 @@ export interface VenueButtonProps {
 	venue: Venue | undefined | null;
 	onClick: ((event: any) => void) | null;
 }
-
-const React = Plugin.React || import("react");
 
 export class VenueButton
 	extends React.Component<VenueButtonProps, VenueButtonState> {

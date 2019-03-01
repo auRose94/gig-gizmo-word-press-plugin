@@ -1,11 +1,11 @@
 import {
 	Gig
 } from "gig-gizmo-sdk";
+import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { server } from "./config";
-import Plugin from "./index";
 
 export interface GigButtonProps {
 	gigId: string;
@@ -16,8 +16,6 @@ export interface GigButtonProps {
 export interface GigButtonState {
 	gig: Gig | undefined | null;
 }
-
-const React = Plugin.React || import("react");
 
 export class GigButton
 	extends React.Component<GigButtonProps, GigButtonState> {
@@ -83,7 +81,7 @@ export class GigButton
 		}
 		return React.createElement(
 			Button, {
-				href: `${server}/gig/${gig._id}`,
+				href: `${server}/gig/${gigId}`,
 				className: "GigButton",
 				onClick,
 				children: [

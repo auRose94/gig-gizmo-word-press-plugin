@@ -10,9 +10,9 @@ import {
 	Venue
 } from "gig-gizmo-sdk";
 
+import React from "react";
 import { BandButton } from "./BandButton";
 import { GigButton } from "./GigButton";
-import Plugin from "./index";
 import { ColumnData, ModelTable } from "./ModelTable";
 import "./styles/calendar.css";
 import { VenueButton } from "./VenueButton";
@@ -38,8 +38,6 @@ interface ShowTableState {
 	promises: Array<Promise<void>>;
 	ready: boolean;
 }
-
-const React = Plugin.React || import("react");
 
 export class ShowTable
 	extends React.Component<ShowTableProps, ShowTableState> {

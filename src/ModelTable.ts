@@ -1,4 +1,5 @@
 import { RESTModel } from "gig-gizmo-sdk";
+import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -6,7 +7,6 @@ import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Table from "react-bootstrap/lib/Table";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
-import Plugin from "./index";
 import "./styles/table.css";
 import { TablePagination } from "./TablePagination";
 
@@ -32,8 +32,6 @@ interface ModelTableProps {
 	onPageChange: (event: any, page: number) => void;
 	onRowsPerPageChange: (event: any, rows: number) => void;
 }
-
-const React = Plugin.React || import("react");
 
 export class ModelTable
 	extends React.Component<ModelTableProps, {}> {
@@ -276,7 +274,7 @@ export class ModelTable
 			(event: any, value: number) =>
 				onRowsPerPageChange(event, value);
 		return React.createElement(
-			Plugin.React.Fragment, {
+			React.Fragment, {
 				children: [
 					React.createElement(
 						Table, {

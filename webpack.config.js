@@ -1,6 +1,7 @@
 const isDebug = !process.argv.includes("--release");
 
 module.exports = {
+	cache: true,
 	mode: isDebug ? "development" : "production",
 
 	/*

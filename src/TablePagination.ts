@@ -1,10 +1,10 @@
+import React from "react";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Form from "react-bootstrap/lib/Form";
 import FormControl from "react-bootstrap/lib/FormControl";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Pager from "react-bootstrap/lib/Pager";
 
-import Plugin from "./index";
 import "./styles/TablePagination.css";
 
 interface TablePaginationProps {
@@ -15,8 +15,6 @@ interface TablePaginationProps {
 	onChangePage: (event: any, page: number) => void;
 	onChangeRowsPerPage: (event: any, rows: number) => void;
 }
-
-const React = Plugin.React || import("react");
 
 export class TablePagination
 	extends React.Component<TablePaginationProps> {
