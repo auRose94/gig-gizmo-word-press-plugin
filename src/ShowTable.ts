@@ -92,7 +92,7 @@ export class ShowTable
 		const self = this;
 		const onError = (error: any) => console.error(error);
 		const onBand = (band: Band | null) => {
-			if (band) {
+			if (band && band.id) {
 				bands.set(band.id, band);
 				self.setState({
 					bands
@@ -100,7 +100,7 @@ export class ShowTable
 			}
 		};
 		const onVenue = (venue: Venue | null) => {
-			if (venue) {
+			if (venue && venue.id) {
 				venues.set(venue.id, venue);
 				self.setState({
 					venues
@@ -115,9 +115,11 @@ export class ShowTable
 				bands.set(bandId, band);
 				const rGigs = await band.getGigs();
 				rGigs.forEach((gig: Gig) => {
-					gigMap.set(gig.id, gig);
-					promises.push(gig.getVenue()
-						.then(onVenue, onError));
+					if (gig && gig.id) {
+						gigMap.set(gig.id, gig);
+						promises.push(gig.getVenue()
+							.then(onVenue, onError));
+					}
 				});
 				await Promise.all(promises);
 				self.setState({
@@ -138,8 +140,8 @@ export class ShowTable
 				venues.set(venueId, venue);
 				const rGigs: Gig[] = await venue.getGigs();
 				rGigs.forEach((gig: Gig) => {
-					gigMap.set(gig.id, gig);
-					if (gig && Array.isArray(gig.bands)) {
+					if (gig && gig.id && Array.isArray(gig.bands)) {
+						gigMap.set(gig.id, gig);
 						gig.bands.forEach((gigBandId: string) => {
 							if (!bands.has(gigBandId)) {
 								const promise = Band.findById(gigBandId)
@@ -171,8 +173,8 @@ export class ShowTable
 				idTable.map((id: string) => Gig.findById(id))
 			)).filter((v) => v !== null) as Gig[];
 			rGigs.forEach((gig: Gig) => {
-				gigMap.set(gig.id, gig);
-				if (gig && Array.isArray(gig.bands)) {
+				if (gig && gig.id && Array.isArray(gig.bands)) {
+					gigMap.set(gig.id, gig);
 					gig.bands.forEach((gigBandId: string) => {
 						if (!bands.has(gigBandId)) {
 							const promise = Band.findById(gigBandId)
@@ -251,7 +253,7 @@ export class ShowTable
 			format: (n: Gig): any => {
 				return React.createElement(
 					GigButton, {
-						gigId: n._id,
+						gigId: n._id || "",
 						gig: n,
 						onClick: null
 					}
@@ -269,7 +271,7 @@ export class ShowTable
 								(bid: string) => bands.get(bid) || null
 							)
 							.map((band: Band | null) => {
-								if (!band) { return null; }
+								if (!band || !band._id) { return null; }
 								const icon: Upload | undefined | null = band.icon ? uploads.get(band.icon) : null;
 								return React.createElement(
 									BandButton, {
