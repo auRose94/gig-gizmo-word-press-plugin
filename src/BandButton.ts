@@ -82,7 +82,7 @@ export class BandButton
 						height: "32",
 						alt: "⚠",
 						className: "bandIcon",
-						src: icon.fileData
+						src: `/cropped/${icon.croppedFileData}`
 					});
 			} else {
 				iconElement = React.createElement(

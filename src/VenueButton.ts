@@ -80,7 +80,7 @@ export class VenueButton
 						height: "32",
 						alt: "⚠",
 						className: "VenueButtonIcon",
-						src: icon.fileData
+						src: `/cropped/${icon.croppedFileData}`
 					}
 				);
 			} else {
