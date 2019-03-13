@@ -1,7 +1,6 @@
 import { Upload, Venue } from "gig-gizmo-sdk";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 
@@ -78,18 +77,13 @@ export class VenueButton
 					"img", {
 						width: "32",
 						height: "32",
-						alt: "⚠",
+						alt: "📌",
 						className: "VenueButtonIcon",
 						src: `/cropped/${icon.croppedFileData}`
 					}
 				);
 			} else {
-				iconElement = React.createElement(
-					Glyphicon, {
-						glyph: "",
-						className: "fa fa-glass"
-					}
-				);
+				iconElement = "📌";
 			}
 
 			buttonElement = React.createElement(

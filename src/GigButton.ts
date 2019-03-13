@@ -3,7 +3,6 @@ import {
 } from "gig-gizmo-sdk";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { server } from "./config";
 
@@ -68,12 +67,7 @@ export class GigButton
 					className: "GigButton",
 					onClick,
 					children: [
-						React.createElement(
-							Glyphicon, {
-								glyph: "",
-								className: "fa fa-calendar"
-							}
-						),
+						"📆",
 						time
 					]
 				}
@@ -85,12 +79,7 @@ export class GigButton
 				className: "GigButton",
 				onClick,
 				children: [
-					React.createElement(
-						Glyphicon, {
-							glyph: "",
-							className: "fa fa-calendar"
-						}
-					),
+					"📆",
 					gigId
 				]
 			}

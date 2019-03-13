@@ -2,7 +2,6 @@ import { RESTModel } from "gig-gizmo-sdk";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Table from "react-bootstrap/lib/Table";
 import Tooltip from "react-bootstrap/lib/Tooltip";
@@ -175,8 +174,8 @@ export class ModelTable
 											const orderBool = order === "asc";
 											const click = showSort && !orderBool ? "asc" : "desc";
 											const glyph = orderBool ?
-												"glyphicon glyphicon-arrow-up" :
-												"glyphicon glyphicon-arrow-down";
+												"↑" :
+												"↓";
 											let tooltipString = "Sort descending";
 											if (showSort && !orderBool) {
 												tooltipString = "Sort ascending";
@@ -198,11 +197,7 @@ export class ModelTable
 																	onRequestSort(event, orderBy, click),
 																children: [
 																	...(showSort ? [
-																		React.createElement(
-																			Glyphicon, {
-																				glyph
-																			}
-																		)
+																		glyph
 																	] : []),
 																	column.label
 																]
