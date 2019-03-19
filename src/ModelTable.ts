@@ -1,4 +1,4 @@
-import { RESTModel } from "gig-gizmo-sdk";
+import { ModelClass } from "gig-gizmo-sdk";
 import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
@@ -19,7 +19,7 @@ export interface ColumnData {
 interface ModelTableProps {
 	selected: string[] | null;
 	columnData: ColumnData[];
-	models: RESTModel[];
+	models: Array<ModelClass<any>>;
 	order: string;
 	orderBy: string;
 	rowsPerPage: number;

@@ -1,5 +1,5 @@
 import {
-	RESTModel
+	ModelClass
 } from "gig-gizmo-sdk";
 import React from "react";
 
@@ -13,7 +13,7 @@ export interface ColumnData {
 interface ModelTableProps {
 	selected: string[] | null;
 	columnData: ColumnData[];
-	models: RESTModel[];
+	models: Array<ModelClass<any>>;
 	order: string;
 	orderBy: string;
 	rowsPerPage: number;

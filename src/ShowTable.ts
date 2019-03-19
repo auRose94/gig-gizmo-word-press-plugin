@@ -5,7 +5,7 @@
 import {
 	Band,
 	Gig,
-	RESTModel,
+	ModelClass,
 	Upload,
 	Venue
 } from "gig-gizmo-sdk";
@@ -107,7 +107,7 @@ export class ShowTable
 				});
 			}
 		};
-		if (RESTModel.isValidId(bandId) &&
+		if (ModelClass.isValidId(bandId) &&
 			bandId !== null &&
 			bandId !== undefined) {
 			const band = await Band.findById(bandId);
@@ -132,7 +132,7 @@ export class ShowTable
 					gigs: rGigs
 				});
 			}
-		} else if (RESTModel.isValidId(venueId) &&
+		} else if (ModelClass.isValidId(venueId) &&
 			venueId !== null &&
 			venueId !== undefined) {
 			const venue = await Venue.findById(venueId);
@@ -167,7 +167,7 @@ export class ShowTable
 			}
 		} else if (
 			Array.isArray(idTable) &&
-			idTable.every(RESTModel.isValidId)
+			idTable.every(ModelClass.isValidId)
 		) {
 			const rGigs: Gig[] = (await Promise.all(
 				idTable.map((id: string) => Gig.findById(id))
