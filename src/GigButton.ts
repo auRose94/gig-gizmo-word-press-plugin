@@ -58,8 +58,8 @@ export class GigButton
 		const gigId = this.props.gigId || null;
 		const onClick = (event: any) => self.handleClick(event);
 		if (gig) {
-			const venueStartTime = gig.startTime;
-			const venueStopTime = gig.stopTime;
+			const venueStartTime = new Date(gig.startTime);
+			const venueStopTime = new Date(gig.stopTime);
 			const time = `${venueStartTime.toLocaleString()} - ${venueStopTime.toLocaleTimeString()}`;
 			return React.createElement(
 				Button, {
