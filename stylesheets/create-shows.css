@@ -1,0 +1,34 @@
+
+.add-icon {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	font-size: 30px;
+	vertical-align: initial;
+	padding-top: 3px;
+	margin-right: 2px;
+}
+
+.add-button {
+	height: 34px;
+	margin: auto;
+	padding: 0;
+	vertical-align: top;
+}
+
+.sub-icon {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	font-size: 30px;
+	vertical-align: initial;
+	padding-top: 1px;
+	margin-right: 0px;
+}
+
+.sub-button {
+	height: 34px;
+	margin: auto;
+	padding: 0;
+	vertical-align: top;
+}
