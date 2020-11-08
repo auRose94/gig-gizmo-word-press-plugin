@@ -9,7 +9,7 @@ Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
 Author: Cory Noll Crimmins Golden
-Version: 0.1.7
+Version: 0.1.8
 Author URI: https://mountainvalley.today/
 */
 
@@ -323,21 +323,7 @@ function show_calendar_table_shortcode($atts)
 	ob_flush();
 	return $output;
 }
-add_action('admin_menu', 'gg_admin_menu');
 
-add_action("admin_init", "gg_header_admin_init");
-add_action("init", "create_post_type_performer"); // Add our HTML5 Blank Custom Post Type
-add_action("widgets_init", "gg_widget_init"); // Remove inline Recent Comment Styles from wp_head()
-
-add_action('admin_post_nopriv_create_shows_post', 'create_shows_post');
-add_action('admin_post_create_shows_post', 'create_shows_post');
-
-add_action("admin_post_nopriv_remove_shows_post", "remove_shows_post");
-add_action("admin_post_remove_shows_post", "remove_shows_post");
-
-add_shortcode("show_calendar_table", "show_calendar_table_shortcode");
-
-add_filter('the_content', 'performer_content_filter', 1);
 
 function performer_content_filter($content)
 {
@@ -405,10 +391,25 @@ function performer_content_filter($content)
 			</table>
 <?php
 		}
-		$result = ob_get_clean();
-		return $result . $content;
+		return ob_get_clean() . $content;
 	}
 	return $content;
 }
+
+add_action('admin_menu', 'gg_admin_menu');
+
+add_action("admin_init", "gg_header_admin_init");
+add_action("init", "create_post_type_performer"); // Add our HTML5 Blank Custom Post Type
+add_action("widgets_init", "gg_widget_init"); // Remove inline Recent Comment Styles from wp_head()
+
+add_action('admin_post_nopriv_create_shows_post', 'create_shows_post');
+add_action('admin_post_create_shows_post', 'create_shows_post');
+
+add_action("admin_post_nopriv_remove_shows_post", "remove_shows_post");
+add_action("admin_post_remove_shows_post", "remove_shows_post");
+
+add_shortcode("show_calendar_table", "show_calendar_table_shortcode");
+
+add_filter('the_content', 'performer_content_filter');
 
 ?>
