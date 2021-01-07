@@ -6,11 +6,11 @@ import { default as $ } from "jquery";
 
 	function getUnusedID() {
 		let current = 0;
-		for(let ind in indexMap.keys()) {
+		for (let ind in indexMap.keys()) {
 			let int = Number.parseInt(ind);
-			if(current == int)
+			if (current == int)
 				current = int + 1;
-			if(!indexMap.has(current))
+			if (!indexMap.has(current))
 				break;
 		}
 		return current;
@@ -44,8 +44,8 @@ import { default as $ } from "jquery";
 			<button id="add-button" type="button" class="add-button btn btn-outline-primary btn-sm"><span class="add-icon dashicons dashicons-plus"></span></button>
 			<button id="sub-button" type="button" class="sub-button btn btn-outline-primary btn-sm"><span class="sub-icon dashicons dashicons-minus"></span></button>
 		</div>`);
-		$(".add-button").one("click", addButtonPress);
-		$(".sub-button").one("click", removeButtonPress);
+		$(".add-button").on("click", addButtonPress);
+		$(".sub-button").on("click", removeButtonPress);
 		$(".sub-button").prop(
 			"disabled",
 			$(".date-time").length <= 1
@@ -55,7 +55,7 @@ import { default as $ } from "jquery";
 	$(function () {
 		'use strict';
 		$("#sub-button").prop("disabled", true);
-		$("#add-button").one("click", addButtonPress);
+		$("#add-button").on("click", addButtonPress);
 
 	});
 
