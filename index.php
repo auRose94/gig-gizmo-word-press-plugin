@@ -2,14 +2,14 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.7
+ * @version 0.1.13
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
 Author: Cory Noll Crimmins Golden
-Version: 0.1.8
+Version: 0.1.13
 Author URI: https://mountainvalley.today/
 */
 
