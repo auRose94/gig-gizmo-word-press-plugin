@@ -28,13 +28,10 @@ import { default as $ } from "jquery";
 
 	function addButtonPress(event: JQuery.Event) {
 		let currentIndex = getUnusedID();
-		let el = (event as any)["target"] as HTMLElement;
 		indexMap.set(currentIndex, true);
 		event.preventDefault();
-		let root = $(el).parent();
-		while (root && !root.hasClass("date-time"))
-			root = root.parent()
-		root.after(`
+		let root = $("#submit");
+		root.before(`
 		<div class="date-time form-group" id="time-${currentIndex}">
 			<label for="date">Date</label>
 			<input name="date-${currentIndex}" id="date" type="date" />
@@ -55,10 +52,7 @@ import { default as $ } from "jquery";
 
 	$(function () {
 		'use strict';
-		indexMap.set(0, true);
-		$("#sub-button-0").prop("disabled", true);
-		$("#add-button-0").on("click.gg.addButtonPress", addButtonPress);
-
+		addButtonPress(jQuery.Event("load"));
 	});
 
 })(jQuery);

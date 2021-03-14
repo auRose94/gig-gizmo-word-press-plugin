@@ -26,7 +26,7 @@ $nonce = wp_create_nonce('create_shows_nonce');
 		<input type="hidden" name="action" value="create_shows_post">
 		<input type="hidden" name="create_shows_nonce" value="<?php echo $nonce ?>" />
 
-		<div class="form-group">
+		<div id="performers" class="form-group">
 			<label for="performers"><?php echo __("Performer(s)"); ?></label>
 			<select size="16" multiple class="form-control" name="performers[]" id="performers" required>
 				<?php
@@ -41,16 +41,6 @@ $nonce = wp_create_nonce('create_shows_nonce');
 				?>
 			</select>
 		</div>
-		<div class="date-time form-group" id="time-0">
-			<label for="date"><?php echo __("Date"); ?></label>
-			<input name="date-1" id="date" type="date" required />
-			<label for="time-start"><?php echo __("Start Time"); ?></label>
-			<input name="time-start-1" id="time-start" type="time" required />
-			<label for="time-stop"><?php echo __("Stop Time"); ?></label>
-			<input name="time-stop-1" id="time-stop" type="time" required />
-			<button id="add-button-0" type="button" class="add-button btn btn-outline-primary btn-sm"><span class="add-icon dashicons dashicons-plus"></span></button>
-			<button id="sub-button-0" type="button" class="sub-button btn btn-outline-primary btn-sm"><span class="sub-icon dashicons dashicons-minus"></span></button>
-		</div>
-		<button type="submit" class="btn btn-primary btn-lg"><?php echo __("Submit"); ?></button>
+		<button id="submit" type="submit" class="btn btn-primary btn-lg"><?php echo __("Submit"); ?></button>
 	</form>
 </div>
