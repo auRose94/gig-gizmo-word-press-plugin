@@ -2,17 +2,20 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.14
+ * @version 0.1.15
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Author: Cory Noll Crimmins Golden
-Version: 0.1.14
+Version: 0.1.15
+Tested up to: 5.7
+Requires at least: 4.6
+Author: Rose Noll Crimmins Golden
 Author URI: https://mountainvalley.today/
 */
 
+require_once __DIR__ . '/vendor/autoload.php';
 include_once "calendar_widget.php";
 
 function gg_header_admin_init()
@@ -56,28 +59,96 @@ function gg_add_shows_page()
 }
 
 
+function gg_check_role($user = null)
+{
+	if ($user == null)
+		$user = wp_get_current_user();
+	if ($user != null) {
+		$roles = (array) $user->roles;
+		if (array_search("performer_role", $roles, true) != false)
+			return true;
+		if (array_search("administrator", $roles, true) != false)
+			return true;
+		if (array_search("editor", $roles, true) != false)
+			return true;
+	}
+	return false;
+}
+
+function is_performer($user = null)
+{
+	if ($user == null)
+		$user = wp_get_current_user();
+	if ($user != null) {
+		$roles = (array) $user->roles;
+		if (array_search("performer_role", $roles, true) != false)
+			return true;
+	}
+	return false;
+}
+
+function gg_save_post(int $post_ID, object $post, bool $update)
+{
+
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+		return;
+
+	if (!isset($_POST['ep_eventposts_nonce']))
+		return;
+
+	if (!wp_verify_nonce($_POST['ep_eventposts_nonce'], plugin_basename(__FILE__)))
+		return;
+
+	// Is the user allowed to edit the post or page?
+	if (!current_user_can('edit_post', $post_ID))
+		return;
+
+	// Now perform checks to validate your data. 
+	// Note custom fields (different from data in custom metaboxes!) 
+	// will already have been saved.
+	$prevent_publish = false; //Set to true if data was invalid.
+
+	if (is_performer() || $update == false)
+		$prevent_publish = true;
+
+	// Updates are allowed, just not publishing for performers...
+
+	if ($prevent_publish) {
+		// unhook this function to prevent indefinite loop
+		remove_action('save_post', 'gg_save_post');
+
+		// update the post to change post status
+		wp_update_post(array('ID' => $post_ID, 'post_status' => 'draft'));
+
+		// re-hook this function again
+		add_action('save_post', 'gg_save_post');
+	}
+}
+
 function gg_admin_menu()
 {
-	$showsPage = add_menu_page(
-		'All Shows',
-		'Shows',
-		'edit_pages',
-		'shows_page',
-		'gg_shows_page',
-		'dashicons-calendar-alt',
-		30
-	);
-	$addShowsPage = add_submenu_page(
-		'shows_page',
-		"Create Show",
-		"Add New",
-		"edit_pages",
-		"add_shows_page",
-		"gg_add_shows_page"
-	);
+	if (gg_check_role()) {
+		$showsPage = add_menu_page(
+			'All Shows',
+			'Shows',
+			'edit_pages',
+			'shows_page',
+			'gg_shows_page',
+			'dashicons-calendar-alt',
+			30
+		);
+		$addShowsPage = add_submenu_page(
+			'shows_page',
+			"Create Show",
+			"Add New",
+			"edit_pages",
+			"add_shows_page",
+			"gg_add_shows_page"
+		);
 
-	add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
-	add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
+		add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
+		add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
+	}
 }
 
 
@@ -93,7 +164,7 @@ function compare_show_item($a, $b)
 
 function get_show_table()
 {
-	$current	=	get_option("show_table", array());
+	$current = get_option("show_table", array());
 	$table = array();
 	$today = new DateTime();
 	$today->modify("-24 hours");
@@ -161,8 +232,8 @@ function remove_shows_post()
 		exit;
 	} else {
 		wp_die(
-			__('Invalid nonce specified', $Slug),
-			__('Error', $Slug),
+			__('Invalid nonce specified', "gig_gizmo"),
+			__('Error', "gig_gizmo"),
 			array(
 				'response'	=>	403,
 				'back_link'	=>	'admin.php?page=shows_page',
@@ -209,8 +280,8 @@ function create_shows_post()
 		exit;
 	} else {
 		wp_die(
-			__('Invalid nonce specified', $Slug),
-			__('Error', $Slug),
+			__('Invalid nonce specified', "gig_gizmo"),
+			__('Error', "gig_gizmo"),
 			array(
 				'response'	=>	403,
 				'back_link'	=>	'admin.php?page=add_shows_page',
@@ -221,24 +292,100 @@ function create_shows_post()
 
 function create_post_type_performer()
 {
+	function wporg_simple_role()
+	{
+		add_role(
+			'performer_role',
+			_('Performer'),
+			array(
+				'read'         => true,
+				'upload_files' => true,
+
+				'edit_performer' => true,
+				'edit_private_performer' => true,
+				'edit_published_performer' => true,
+
+				'create_performer' => true,
+				'create_private_performer' => true,
+				'publish_performer' => false,
+				'create_published_performer' => false,
+
+				'delete_performer' => false,
+				'delete_private_performer' => false,
+				'delete_published_performer' => false,
+
+				'edit_pages' => false,
+				'edit_posts' => false,
+				'edit_private_pages' => false,
+				'edit_private_posts' => false,
+				'edit_published_pages' => false,
+				'edit_published_posts' => false,
+				'create_sites' => false,
+				'delete_sites' => false,
+				'manage_network' => false,
+				'manage_sites' => false,
+				'manage_network_users' => false,
+				'manage_network_plugins' => false,
+				'manage_network_themes' => false,
+				'manage_network_options' => false,
+				'upgrade_network' => false,
+				'setup_network' => false,
+
+				'activate_plugins' => false,
+				'delete_pages' => false,
+				'delete_posts' => false,
+				'delete_others_pages' => false,
+				'delete_others_posts' => false,
+				'delete_private_pages' => false,
+				'delete_private_posts' => false,
+				'delete_published_pages' => false,
+				'delete_published_posts' => false,
+				'edit_dashboard' => false,
+				'edit_others_pages' => false,
+				'edit_others_posts' => false,
+				'edit_theme_options' => false,
+				'export' => false,
+				'import' => false,
+				'list_users' => false,
+				'manage_categories' => false,
+				'manage_links' => false,
+				'manage_options' => false,
+				'moderate_comments' => false,
+				'promote_users' => false,
+				'publish_pages' => false,
+				'publish_posts' => false,
+				'read_private_pages' => false,
+				'read_private_posts' => false,
+				'remove_users' => false,
+				'switch_themes' => false,
+				'customize' => false,
+				'delete_site' => false,
+
+			),
+		);
+	}
+
+	// Add the simple_role.
+	add_action('init', 'wporg_simple_role');
+
 	register_taxonomy_for_object_type("category", "performer"); // Register Taxonomies for Category
 	register_taxonomy_for_object_type("post_tag", "performer");
 	register_post_type(
 		"performer", // Register Custom Post Type
 		array(
 			"labels" => array(
-				"name" => __("Performers", $Slug),
-				"singular_name" => __("Performer", $Slug),
-				"add_new" => __("Add New", $Slug),
-				"add_new_item" => __("Add New Performer", $Slug),
-				"edit_item" => __("Edit Performer", $Slug),
-				"new_item" => __("New Performer", $Slug),
-				"view_item" => __("View Performer", $Slug),
-				"view_items" => __("View Performers", $Slug),
-				"search_items" => __("Search Performers", $Slug),
-				"not_found" => __("No Performers found", $Slug),
-				"not_found_in_trash" => __("No Performers found in Trash", $Slug),
-				"all_items"	=> __("All Performers", $Slug)
+				"name" => __("Performers", "gig_gizmo"),
+				"singular_name" => __("Performer", "gig_gizmo"),
+				"add_new" => __("Add New", "gig_gizmo"),
+				"add_new_item" => __("Add New Performer", "gig_gizmo"),
+				"edit_item" => __("Edit Performer", "gig_gizmo"),
+				"new_item" => __("New Performer", "gig_gizmo"),
+				"view_item" => __("View Performer", "gig_gizmo"),
+				"view_items" => __("View Performers", "gig_gizmo"),
+				"search_items" => __("Search Performers", "gig_gizmo"),
+				"not_found" => __("No Performers found", "gig_gizmo"),
+				"not_found_in_trash" => __("No Performers found in Trash", "gig_gizmo"),
+				"all_items"	=> __("All Performers", "gig_gizmo")
 			),
 			"publicly_queryable" => true,
 			"menu_icon" => "dashicons-format-audio",
@@ -256,6 +403,8 @@ function create_post_type_performer()
 				"excerpt",
 				"thumbnail"
 			), // Go to Dashboard Custom HTML5 Blank post for supports
+			"delete_with_user" => true,
+			"show_in_rest" => true,
 			"can_export" => true, // Allows export in Tools > Export
 			"taxonomies" => array(
 				"post_tag",
@@ -396,6 +545,7 @@ function performer_content_filter($content)
 	return $content;
 }
 
+add_action('save_post', 'gg_save_post');
 add_action('admin_menu', 'gg_admin_menu');
 
 add_action("admin_init", "gg_header_admin_init");
