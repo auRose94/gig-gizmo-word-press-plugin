@@ -1,7 +1,7 @@
 # GigGizmo WordPress Plugin
 
 Contributors: **[Rose Noll Crimmins Golden](https://mountainvalley.today/)**
-Stable tag: **0.1.15**
+Stable tag: **0.1.16**
 Tested up to: **5.7**
 Requires at least: **4.6**
 

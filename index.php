@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.15
+ * @version 0.1.16
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.15
+Version: 0.1.16
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -359,9 +359,9 @@ function create_post_type_performer()
 				'remove_users' => false,
 				'switch_themes' => false,
 				'customize' => false,
-				'delete_site' => false,
+				'delete_site' => false
 
-			),
+			)
 		);
 	}
 
