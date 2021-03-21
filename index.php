@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.16
+ * @version 0.1.17
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.16
+Version: 0.1.17
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -289,84 +289,81 @@ function create_shows_post()
 		);
 	}
 }
+function gg_create_performer_role()
+{
+	add_role(
+		'performer_role',
+		_('Performer'),
+		array(
+			'read'         => true,
+			'upload_files' => true,
+
+			'edit_performer' => true,
+			'edit_private_performer' => true,
+			'edit_published_performer' => true,
+
+			'create_performer' => true,
+			'create_private_performer' => true,
+			'publish_performer' => false,
+			'create_published_performer' => false,
+
+			'delete_performer' => false,
+			'delete_private_performer' => false,
+			'delete_published_performer' => false,
+
+			'edit_pages' => false,
+			'edit_posts' => false,
+			'edit_private_pages' => false,
+			'edit_private_posts' => false,
+			'edit_published_pages' => false,
+			'edit_published_posts' => false,
+			'create_sites' => false,
+			'delete_sites' => false,
+			'manage_network' => false,
+			'manage_sites' => false,
+			'manage_network_users' => false,
+			'manage_network_plugins' => false,
+			'manage_network_themes' => false,
+			'manage_network_options' => false,
+			'upgrade_network' => false,
+			'setup_network' => false,
+
+			'activate_plugins' => false,
+			'delete_pages' => false,
+			'delete_posts' => false,
+			'delete_others_pages' => false,
+			'delete_others_posts' => false,
+			'delete_private_pages' => false,
+			'delete_private_posts' => false,
+			'delete_published_pages' => false,
+			'delete_published_posts' => false,
+			'edit_dashboard' => false,
+			'edit_others_pages' => false,
+			'edit_others_posts' => false,
+			'edit_theme_options' => false,
+			'export' => false,
+			'import' => false,
+			'list_users' => false,
+			'manage_categories' => false,
+			'manage_links' => false,
+			'manage_options' => false,
+			'moderate_comments' => false,
+			'promote_users' => false,
+			'publish_pages' => false,
+			'publish_posts' => false,
+			'read_private_pages' => false,
+			'read_private_posts' => false,
+			'remove_users' => false,
+			'switch_themes' => false,
+			'customize' => false,
+			'delete_site' => false
+
+		)
+	);
+}
 
 function create_post_type_performer()
 {
-	function wporg_simple_role()
-	{
-		add_role(
-			'performer_role',
-			_('Performer'),
-			array(
-				'read'         => true,
-				'upload_files' => true,
-
-				'edit_performer' => true,
-				'edit_private_performer' => true,
-				'edit_published_performer' => true,
-
-				'create_performer' => true,
-				'create_private_performer' => true,
-				'publish_performer' => false,
-				'create_published_performer' => false,
-
-				'delete_performer' => false,
-				'delete_private_performer' => false,
-				'delete_published_performer' => false,
-
-				'edit_pages' => false,
-				'edit_posts' => false,
-				'edit_private_pages' => false,
-				'edit_private_posts' => false,
-				'edit_published_pages' => false,
-				'edit_published_posts' => false,
-				'create_sites' => false,
-				'delete_sites' => false,
-				'manage_network' => false,
-				'manage_sites' => false,
-				'manage_network_users' => false,
-				'manage_network_plugins' => false,
-				'manage_network_themes' => false,
-				'manage_network_options' => false,
-				'upgrade_network' => false,
-				'setup_network' => false,
-
-				'activate_plugins' => false,
-				'delete_pages' => false,
-				'delete_posts' => false,
-				'delete_others_pages' => false,
-				'delete_others_posts' => false,
-				'delete_private_pages' => false,
-				'delete_private_posts' => false,
-				'delete_published_pages' => false,
-				'delete_published_posts' => false,
-				'edit_dashboard' => false,
-				'edit_others_pages' => false,
-				'edit_others_posts' => false,
-				'edit_theme_options' => false,
-				'export' => false,
-				'import' => false,
-				'list_users' => false,
-				'manage_categories' => false,
-				'manage_links' => false,
-				'manage_options' => false,
-				'moderate_comments' => false,
-				'promote_users' => false,
-				'publish_pages' => false,
-				'publish_posts' => false,
-				'read_private_pages' => false,
-				'read_private_posts' => false,
-				'remove_users' => false,
-				'switch_themes' => false,
-				'customize' => false,
-				'delete_site' => false
-
-			)
-		);
-	}
-
-	// Add the simple_role.
-	add_action('init', 'wporg_simple_role');
 
 	register_taxonomy_for_object_type("category", "performer"); // Register Taxonomies for Category
 	register_taxonomy_for_object_type("post_tag", "performer");
@@ -544,6 +541,9 @@ function performer_content_filter($content)
 	}
 	return $content;
 }
+
+// Add the simple_role.
+add_action('init', 'gg_create_performer_role');
 
 add_action('save_post', 'gg_save_post');
 add_action('admin_menu', 'gg_admin_menu');
