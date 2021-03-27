@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.21
+ * @version 0.1.23
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.21
+Version: 0.1.23
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -436,21 +436,32 @@ function create_post_type_performer()
 	);
 }
 
-function render_performer_names($performers) {
-	if(count($performers) != 2) {
-		for($ip = 0; $ip < count($performers); ++$ip) {
+function render_performer_names($performers)
+{
+	if (count($performers) != 2) {
+		for ($ip = 0; $ip < count($performers); ++$ip) {
 			$performer = get_post($performers[$ip]);
-			?>
-				<a href="<?php echo get_post_permalink($performer); ?>"><?php echo $performer->post_title; ?></a><?php 
-				if(count($performers) - 1 > $ip) {
-					echo ",";
-				}?><?php
+?>
+			<a href="<?php echo get_post_permalink($performer); ?>">
+				<?php
+				echo $performer->post_title; ?></a>
+		<?php
+			if (count($performers) - 1 > $ip) {
+				echo ",";
+			}
 		}
 	} else {
 		$lPerformer = get_post($performers[0]);
 		$rPerformer = get_post($performers[1]);
 		?>
-		<a href="<?php echo get_post_permalink($lPerformer); ?>"><?php echo $lPerformer->post_title; ?></a> &amp; <a href="<?php echo get_post_permalink($rPerformer); ?>"><?php echo $rPerformer->post_title; ?></a>
+		<a href="<?php echo get_post_permalink($lPerformer); ?>">
+			<?php echo $lPerformer->post_title; ?>
+		</a>
+		&amp;
+		<a href="<?php echo get_post_permalink($rPerformer); ?>">
+			<?php echo $rPerformer->post_title; ?>
+		</a>
+	<?php
 	}
 }
 
@@ -458,7 +469,7 @@ function show_calendar_table_shortcode($atts)
 {
 	$data = get_show_table();
 	ob_start();
-?>
+	?>
 	<div class="calendar-table">
 		<table class="table">
 			<thead>
@@ -488,8 +499,8 @@ function show_calendar_table_shortcode($atts)
 							?>
 						</td>
 						<td>
-							<?php 
-								render_performer_names($performers);
+							<?php
+							render_performer_names($performers);
 							?>
 						</td>
 					</tr>
@@ -547,8 +558,8 @@ function performer_content_filter($content)
 								?>
 							</th>
 							<th>
-								<?php 
-									render_performer_names($performers);
+								<?php
+								render_performer_names($performers);
 								?>
 							</th>
 						</tr>

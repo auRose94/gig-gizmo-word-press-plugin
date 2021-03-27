@@ -1,6 +1,6 @@
 {
     "name": "gig-gizmo-plugin",
-    "version": "0.1.21",
+    "version": "0.1.23",
     "description": "",
     "main": "index.js",
     "dependencies": {

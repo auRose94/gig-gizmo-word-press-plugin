@@ -90,16 +90,7 @@ class CalendarWidget extends WP_Widget
 								?>
 							</td>
 							<td>
-								<?php
-								for ($ip = 0; $ip < count($performers); ++$ip) {
-									$performer = get_post($performers[$ip]);
-								?>
-									<a href="<?php echo get_post_permalink($performer); ?>"><?php echo $performer->post_title; ?></a><?php
-																																		if (count($performers) - 1 > $ip) {
-																																			echo ",";
-																																		} ?><?php
-														}
-															?>
+								<?php render_performer_names($performers); ?>
 							</td>
 						</tr>
 					<?php
