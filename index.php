@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.17
+ * @version 0.1.18
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.17
+Version: 0.1.18
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -87,7 +87,7 @@ function is_performer($user = null)
 	return false;
 }
 
-function gg_save_post(int $post_ID, object $post, bool $update)
+function gg_save_post(int $post_ID)
 {
 
 	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
@@ -108,7 +108,7 @@ function gg_save_post(int $post_ID, object $post, bool $update)
 	// will already have been saved.
 	$prevent_publish = false; //Set to true if data was invalid.
 
-	if (is_performer() || $update == false)
+	if (is_performer())
 		$prevent_publish = true;
 
 	// Updates are allowed, just not publishing for performers...
