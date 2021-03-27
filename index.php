@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.20
+ * @version 0.1.21
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.20
+Version: 0.1.21
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -436,6 +436,24 @@ function create_post_type_performer()
 	);
 }
 
+function render_performer_names($performers) {
+	if(count($performers) != 2) {
+		for($ip = 0; $ip < count($performers); ++$ip) {
+			$performer = get_post($performers[$ip]);
+			?>
+				<a href="<?php echo get_post_permalink($performer); ?>"><?php echo $performer->post_title; ?></a><?php 
+				if(count($performers) - 1 > $ip) {
+					echo ",";
+				}?><?php
+		}
+	} else {
+		$lPerformer = get_post($performers[0]);
+		$rPerformer = get_post($performers[1]);
+		?>
+		<a href="<?php echo get_post_permalink($lPerformer); ?>"><?php echo $lPerformer->post_title; ?></a> &amp; <a href="<?php echo get_post_permalink($rPerformer); ?>"><?php echo $rPerformer->post_title; ?></a>
+	}
+}
+
 function show_calendar_table_shortcode($atts)
 {
 	$data = get_show_table();
@@ -470,16 +488,8 @@ function show_calendar_table_shortcode($atts)
 							?>
 						</td>
 						<td>
-							<?php
-							for ($ip = 0; $ip < count($performers); ++$ip) {
-								$performer = get_post($performers[$ip]);
-							?>
-								<a href="<?php echo get_post_permalink($performer); ?>">
-									<?php echo $performer->post_title; ?>
-								</a>
-								<?php if (count($performers) - 1 > $ip)	echo ","; ?>
-							<?php
-							}
+							<?php 
+								render_performer_names($performers);
 							?>
 						</td>
 					</tr>
@@ -537,21 +547,8 @@ function performer_content_filter($content)
 								?>
 							</th>
 							<th>
-								<?php
-								for ($ci = 0; $ci < count($performers); ++$ci) {
-									$performer = get_post($performers[$ci]);
-									if ($performer) {
-								?>
-										<a href="<?php echo get_post_permalink($performer) ?>">
-											<?php echo $performer->post_title; ?>
-										</a>
-										<?php
-										if (count($performers) - 1 > $ci) {
-											echo ",";
-										} ?>
-								<?php
-									}
-								}
+								<?php 
+									render_performer_names($performers);
 								?>
 							</th>
 						</tr>
