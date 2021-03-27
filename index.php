@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.19
+ * @version 0.1.20
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.19
+Version: 0.1.20
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -58,18 +58,6 @@ function gg_add_shows_page()
 	include "add_shows_page.php";
 }
 
-function is_performer($user = null)
-{
-	if ($user == null)
-		$user = wp_get_current_user();
-	if ($user != null) {
-		$roles = (array) $user->roles;
-		if (array_search("performer_role", $roles, true) != false)
-			return true;
-	}
-	return false;
-}
-
 function gg_save_post(int $post_ID)
 {
 
@@ -91,7 +79,9 @@ function gg_save_post(int $post_ID)
 	// will already have been saved.
 	$prevent_publish = false; //Set to true if data was invalid.
 
-	if (is_performer())
+	$user = wp_get_current_user();
+
+	if (!$user->has_cap("create_shows"))
 		$prevent_publish = true;
 
 	// Updates are allowed, just not publishing for performers...
@@ -110,26 +100,29 @@ function gg_save_post(int $post_ID)
 
 function gg_admin_menu()
 {
-	$showsPage = add_menu_page(
-		'All Shows',
-		'Shows',
-		'edit_pages',
-		'shows_page',
-		'gg_shows_page',
-		'dashicons-calendar-alt',
-		30
-	);
-	$addShowsPage = add_submenu_page(
-		'shows_page',
-		"Create Show",
-		"Add New",
-		"edit_pages",
-		"add_shows_page",
-		"gg_add_shows_page"
-	);
+	$user = wp_get_current_user();
+	if ($user->has_cap("create_shows")) {
+		$showsPage = add_menu_page(
+			'All Shows',
+			'Shows',
+			'edit_pages',
+			'shows_page',
+			'gg_shows_page',
+			'dashicons-calendar-alt',
+			30
+		);
+		$addShowsPage = add_submenu_page(
+			'shows_page',
+			"Create Show",
+			"Add New",
+			"edit_pages",
+			"add_shows_page",
+			"gg_add_shows_page"
+		);
 
-	add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
-	add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
+		add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
+		add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
+	}
 }
 
 
@@ -190,6 +183,16 @@ function get_show_table()
 
 function remove_shows_post()
 {
+	$user = wp_get_current_user();
+	if (!$user->has_cap("delete_shows"))
+		return wp_die(
+			__('You do not have access rights.', "gig_gizmo"),
+			__('Error', "gig_gizmo"),
+			array(
+				'response'	=>	403,
+				'back_link'	=>	'admin.php?page=shows_page',
+			)
+		);
 	if (isset($_POST['remove_shows_nonce']) && wp_verify_nonce($_POST['remove_shows_nonce'], 'remove_shows_nonce')) {
 		$showTimes = get_show_table();
 		$showCopy = array();
@@ -212,7 +215,7 @@ function remove_shows_post()
 		wp_redirect(admin_url('admin.php?page=shows_page'));
 		exit;
 	} else {
-		wp_die(
+		return wp_die(
 			__('Invalid nonce specified', "gig_gizmo"),
 			__('Error', "gig_gizmo"),
 			array(
@@ -225,6 +228,16 @@ function remove_shows_post()
 
 function create_shows_post()
 {
+	$user = wp_get_current_user();
+	if (!$user->has_cap("create_shows"))
+		return wp_die(
+			__('You do not have access rights.', "gig_gizmo"),
+			__('Error', "gig_gizmo"),
+			array(
+				'response'	=>	403,
+				'back_link'	=>	'admin.php?page=shows_page',
+			)
+		);
 	if (isset($_POST['create_shows_nonce']) && wp_verify_nonce($_POST['create_shows_nonce'], 'create_shows_nonce')) {
 		// sanitize the input
 		$performers = $_POST['performers'];
@@ -272,12 +285,39 @@ function create_shows_post()
 }
 function gg_create_performer_role()
 {
+	$admin = get_role('administrator');
+	$admin->add_cap('create_shows', true);
+	$admin->add_cap('delete_shows', true);
+	$admin->add_cap('edit_shows', true);
+
+	$editor = get_role('editor');
+	$editor->add_cap('create_shows', true);
+	$editor->add_cap('delete_shows', true);
+	$editor->add_cap('edit_shows', true);
+
+	$editor = get_role('author');
+	$editor->add_cap('create_shows', false);
+	$editor->add_cap('delete_shows', false);
+	$editor->add_cap('edit_shows', false);
+
+	$editor = get_role('contributor');
+	$editor->add_cap('create_shows', false);
+	$editor->add_cap('delete_shows', false);
+	$editor->add_cap('edit_shows', false);
+
+	$editor = get_role('subscriber');
+	$editor->add_cap('create_shows', false);
+	$editor->add_cap('delete_shows', false);
+	$editor->add_cap('edit_shows', false);
+
 	add_role(
 		'performer_role',
 		_('Performer'),
 		array(
-			'read'         => true,
-			'upload_files' => true,
+			// Custom
+			'create_shows' => false,
+			'delete_shows' => false,
+			'edit_shows'   => false,
 
 			'edit_performer' => true,
 			'edit_private_performer' => true,
@@ -291,6 +331,10 @@ function gg_create_performer_role()
 			'delete_performer' => false,
 			'delete_private_performer' => false,
 			'delete_published_performer' => false,
+
+			// Standard
+			'read'         => true,
+			'upload_files' => true,
 
 			'edit_pages' => false,
 			'edit_posts' => false,
