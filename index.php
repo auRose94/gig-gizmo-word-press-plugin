@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.18
+ * @version 0.1.19
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.18
+Version: 0.1.19
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -56,23 +56,6 @@ function gg_shows_page()
 function gg_add_shows_page()
 {
 	include "add_shows_page.php";
-}
-
-
-function gg_check_role($user = null)
-{
-	if ($user == null)
-		$user = wp_get_current_user();
-	if ($user != null) {
-		$roles = (array) $user->roles;
-		if (array_search("performer_role", $roles, true) != false)
-			return true;
-		if (array_search("administrator", $roles, true) != false)
-			return true;
-		if (array_search("editor", $roles, true) != false)
-			return true;
-	}
-	return false;
 }
 
 function is_performer($user = null)
@@ -127,28 +110,26 @@ function gg_save_post(int $post_ID)
 
 function gg_admin_menu()
 {
-	if (gg_check_role()) {
-		$showsPage = add_menu_page(
-			'All Shows',
-			'Shows',
-			'edit_pages',
-			'shows_page',
-			'gg_shows_page',
-			'dashicons-calendar-alt',
-			30
-		);
-		$addShowsPage = add_submenu_page(
-			'shows_page',
-			"Create Show",
-			"Add New",
-			"edit_pages",
-			"add_shows_page",
-			"gg_add_shows_page"
-		);
+	$showsPage = add_menu_page(
+		'All Shows',
+		'Shows',
+		'edit_pages',
+		'shows_page',
+		'gg_shows_page',
+		'dashicons-calendar-alt',
+		30
+	);
+	$addShowsPage = add_submenu_page(
+		'shows_page',
+		"Create Show",
+		"Add New",
+		"edit_pages",
+		"add_shows_page",
+		"gg_add_shows_page"
+	);
 
-		add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
-		add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
-	}
+	add_action("admin_print_styles-{$showsPage}", 'gg_header_admin_enqueue');
+	add_action("admin_print_styles-{$addShowsPage}", 'gg_header_admin_add_show_enqueue');
 }
 
 
