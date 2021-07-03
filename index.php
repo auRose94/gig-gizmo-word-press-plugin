@@ -2,13 +2,13 @@
 
 /**
  * @package GigGizmo WordPress Plugin
- * @version 0.1.23
+ * @version 0.1.46
  */
 /*
 Plugin Name: GigGizmo WordPress Plugin
 Plugin URI: http://giggizmo.com/plugins/wordpress/
 Description: This is GigGizmo's WordPress Plugin. This will help you organize shows, bands, and your venues on your WordPress sites.
-Version: 0.1.23
+Version: 0.1.46
 Tested up to: 5.7
 Requires at least: 4.6
 Author: Rose Noll Crimmins Golden
@@ -568,31 +568,167 @@ function performer_content_filter($content)
 					?>
 				</tbody>
 			</table>
-<?php
+	<?php
 		}
 		return ob_get_clean() . $content;
 	}
 	return $content;
 }
 
-// Add the simple_role.
-add_action('init', 'gg_create_performer_role');
+function validate_license($licenseKey)
+{
+	$license_server = "https://mountainvalley.today/wpdmpro/";
+	$domain = $_SERVER['HTTP_HOST']; // domain name or IP
+	$url = $license_server . "?wpdmLicense=validate&domain={$domain}&productId=730&licenseKey={$licenseKey}";
+	$response = wp_remote_get($url, array("method" => "POST"));
+	if (is_string($response['body']))
+		return json_decode($response['body']);
+	return $response;
+}
 
-add_action('save_post', 'gg_save_post');
-add_action('admin_menu', 'gg_admin_menu');
+function gg_activate_plugin()
+{
+	add_action('init', 'gg_create_performer_role');
 
+	add_action('save_post', 'gg_save_post');
+	add_action('admin_menu', 'gg_admin_menu');
+
+	add_action("init", "create_post_type_performer");
+	add_action("widgets_init", "gg_widget_init");
+
+	add_action('admin_post_nopriv_create_shows_post', 'create_shows_post');
+	add_action('admin_post_create_shows_post', 'create_shows_post');
+
+	add_action("admin_post_nopriv_remove_shows_post", "remove_shows_post");
+	add_action("admin_post_remove_shows_post", "remove_shows_post");
+
+	add_shortcode("show_calendar_table", "show_calendar_table_shortcode");
+
+	add_filter('the_content', 'performer_content_filter');
+}
+
+function gg_check_license()
+{
+	$key = get_option("gig_gizmo_license_key", false);
+	if ($key != false) {
+		$response = validate_license($key);
+		if ($response) {
+			echo "<!-- response: " . esc_html(json_encode($response)) . " -->";
+			if ($response->status == 'VALID') {
+				// License is valid, next...
+				gg_activate_plugin();
+				return $response;
+			} else if ($response->status == 'INVALID')
+				return -3;  // License is invalid
+			else if ($response->status == 'EXPIRED')
+				return -1;  // License expired
+		} else // No response
+			return -2;
+	}
+	return 0;
+}
+gg_check_license(); // on plugin load
+
+function gg_settings_init()
+{
+	register_setting("gig_gizmo", 'gig_gizmo_license_key');
+
+	add_settings_section(
+		'gg_section_license',
+		__('License', "gig_gizmo"),
+		'gg_section_license_callback',
+		"gig_gizmo"
+	);
+
+	add_settings_field(
+		'gig_gizmo_license_key',
+		__('Key', "gig_gizmo"),
+		'gg_licensekey_field_cb',
+		"gig_gizmo",
+		'gg_section_license',
+		array(
+			'label_for'         => 'gig_gizmo_license_key',
+			'class'             => 'gg_row',
+			// 'gg_custom_data' => 'custom',
+		)
+	);
+}
+
+add_action('admin_init', 'gg_settings_init');
 add_action("admin_init", "gg_header_admin_init");
-add_action("init", "create_post_type_performer"); // Add our HTML5 Blank Custom Post Type
-add_action("widgets_init", "gg_widget_init"); // Remove inline Recent Comment Styles from wp_head()
 
-add_action('admin_post_nopriv_create_shows_post', 'create_shows_post');
-add_action('admin_post_create_shows_post', 'create_shows_post');
+function gg_section_license_callback($args)
+{
+	$key = get_option("gig_gizmo_license_key", "");
+	$licenseMsg = "";
+	$validLicense = gg_check_license();
+	if (is_numeric($validLicense)) {
+		if (0 == $validLicense)
+			$licenseMsg = esc_html('No license key!', "gig_gizmo");
+		else if (-1 == $validLicense)
+			$licenseMsg = esc_html('Expired license key!', "gig_gizmo");
+		else if (-2 == $validLicense)
+			$licenseMsg = esc_html('Unable to verify license!', "gig_gizmo");
+		else if (-3 == $validLicense)
+			$licenseMsg = esc_html('Invalid license key!', "gig_gizmo");
+	} else
+		$licenseMsg = esc_html('Valid license! Thanks for purchasing! :)', "gig_gizmo");
+	?> <p><?php echo $licenseMsg/* . json_encode($key) */; ?></p>
+<?php
+}
 
-add_action("admin_post_nopriv_remove_shows_post", "remove_shows_post");
-add_action("admin_post_remove_shows_post", "remove_shows_post");
+function gg_licensekey_field_cb($args)
+{
+	$labelFor = $args['label_for'];
+	$licenseKey = get_option("gig_gizmo_license_key", "");
+?>
+	<input value="<?php esc_attr_e($licenseKey); ?>" type="text" name="<?php esc_attr_e($labelFor); ?>" id="<?php esc_attr_e($labelFor); ?>"></input>
+<?php
+}
 
-add_shortcode("show_calendar_table", "show_calendar_table_shortcode");
+/**
+ * Add the top level menu page.
+ */
+function gg_options_page()
+{
+	add_menu_page(
+		__('GigGizmo Settings', "gig_gizmo"),
+		__('GigGizmo', "gig_gizmo"),
+		'manage_options',
+		"gig_gizmo",
+		'gg_options_page_html'
+	);
+}
 
-add_filter('the_content', 'performer_content_filter');
+
+/**
+ * Register our gg_options_page to the admin_menu action hook.
+ */
+add_action('admin_menu', 'gg_options_page');
+
+
+/**
+ * Top level menu callback function
+ */
+function gg_options_page_html()
+{
+	// check user capabilities
+	if (!current_user_can('manage_options')) {
+		return;
+	}
+
+	// add error/update messages
+
+	// check if the user have submitted the settings
+	// WordPress will add the "settings-updated" $_GET parameter to the url
+	if (isset($_GET['settings-updated'])) {
+		// add settings saved message with the class of "updated"
+		add_settings_error('gg_messages', 'gg_message', __('Settings Saved', "gig_gizmo"), 'updated');
+	}
+
+	// show error/update messages
+	settings_errors('gg_messages');
+	include "options_page.php";
+}
 
 ?>
