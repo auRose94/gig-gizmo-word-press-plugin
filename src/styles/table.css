@@ -1,0 +1,11 @@
+.table {
+	background-color: #424242 !important;
+	border-radius: 5px;
+	color: white !important;
+	display: table;
+	height: auto;
+	max-width: 100%;
+	min-width: 420px;
+	position: relative;
+	width: 100%;
+}

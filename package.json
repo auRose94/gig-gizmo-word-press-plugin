@@ -1,36 +1,43 @@
 {
-	"name": "gig-gizmo-plugin",
-	"version": "0.1.46",
-	"description": "",
-	"main": "index.js",
-	"dependencies": {
-		"@types/adm-zip": "^0.4.33",
-		"@types/backbone": "^1.4.5",
-		"@types/jquery": "^3.5.1",
-		"@types/underscore": "^1.10.24",
-		"adm-zip": "^0.4.16",
-		"backbone": "^1.4.0",
-		"bootstrap": "^4.5.2",
-		"conditionizr": "^4.5.1",
-		"jquery": "^3.5.1",
-		"jquery-particles": "^1.17.12",
-		"modernizr": "^3.11.3",
-		"particle.js": "^1.0.7",
-		"popper.js": "^1.16.1",
-		"tsparticles": "^1.17.12",
-		"underscore": "^1.11.0",
-		"yuicompressor": "^2.4.8"
-	},
-	"devDependencies": {
-		"ts-loader": "^8.0.4",
-		"typescript": "^4.0.3",
-		"webpack": "^4.44.2",
-		"webpack-cli": "^3.3.12"
+	"name": "gig-gizmo-word-press-plugin",
+	"version": "0.4.16",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"typings": "./typings/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Halsys/gig-gizmo-word-press-plugin.git"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "npx webpack-cli --progress && npx ts-node ./compile2Zip.ts"
+		"start": "webpack --config webpack.config.js",
+		"build": "webpack --config webpack.config.js --release",
+		"build:dev": "webpack --config webpack.config.js"
 	},
-	"author": "Rose Noll Crimmins-Golden",
-	"license": "PROPRIETARY"
+	"dependencies": {
+		"axios": "^0.18.0",
+		"gig-gizmo-sdk": "github:Halsys/gig-gizmo-sdk#master",
+		"react": "^16.8.6",
+		"react-bootstrap": "^0.32.4",
+		"react-dom": "^16.8.6",
+		"socket.io-client": "^2.2.0"
+	},
+	"peerDependency": {
+		"react": "^16.8.3",
+		"react-bootstrap": "^0.32.4",
+		"react-dom": "^16.8.3"
+	},
+	"devDependencies": {
+		"@types/react": "^16.8.16",
+		"@types/react-bootstrap": "^0.32.17",
+		"@types/react-dom": "^16.8.4",
+		"@types/socket.io-client": "^1.4.32",
+		"awesome-typescript-loader": "^5.2.1",
+		"css-loader": "^1.0.1",
+		"source-map-loader": "^0.2.4",
+		"style-loader": "^0.23.1",
+		"typescript": "^3.4.5",
+		"uglifyjs-webpack-plugin": "^2.1.2",
+		"webpack": "^4.30.0",
+		"webpack-cli": "^3.3.2"
+	}
 }

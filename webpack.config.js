@@ -1,51 +1,78 @@
-const path = require('path');
+const isDebug = !process.argv.includes("--release");
 
-let externals = {
-  jquery: 'jQuery',
-  backbone: "Backbone",
-  underscore: "_",
-};
+module.exports = {
+	cache: true,
+	mode: isDebug ? "development" : "production",
 
-let entry = {
-  "create-shows": "./js/src/create-shows.ts"
-};
+	/*
+	externals: {
+		"react": "react",
+		"react-dom": "react-dom",
+		"react-bootstrap": "react-bootstrap",
+		"socket.io-client": "socket.io-client",
+		"axios": "axios"
+	},
+	*/
 
-let moduleConfig = {
-  rules: [
-    {
-      test: /\.tsx?$/,
-      use: 'ts-loader',
-      exclude: /node_modules/,
-    },
-  ],
-};
+	// Enable sourcemaps for debugging webpack's output.
+	devtool: "source-map",
 
-let resolve = {
-  extensions: [ '.tsx', '.ts', '.js' ],
-};
+	resolve: {
+		// Add '.ts' and '.tsx' as resolvable extensions.
+		extensions: [".ts", ".tsx", ".js", ".json"]
+	},
 
-module.exports = [
-  {
-    //Debug
-    mode: "development",
-    output: {
-      filename: './js/[name].js',
-      path: path.resolve(__dirname),
-    },
-    module: moduleConfig,
-    entry,
-    resolve,
-    externals
-  },
-  {
-    mode: "production",
-    output: {
-      filename: './js/[name].min.js',
-      path: path.resolve(__dirname),
-    },
-    module: moduleConfig,
-    entry,
-    resolve,
-    externals
-  }
-];
+	module: {
+		rules: [
+			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+			{
+				test: /\.ts[x]?$/,
+				loader: "awesome-typescript-loader",
+				options: {
+					usePrecompiledFiles: true,
+					useCache: true
+				}
+			},
+
+			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+			{
+				enforce: "pre",
+				test: /\.js$/,
+				loader: "source-map-loader"
+			},
+
+			// All css files will become packed in by 'css-loader'.
+			{
+				test: /\.css$/,
+				use: [{
+					loader: 'style-loader',
+					options: {
+						hmr: true
+					}
+				}, {
+					loader: 'css-loader',
+					options: {
+						url: true,
+						import: true,
+						modules: true
+					}
+				}]
+			}
+		]
+	},
+
+	entry: "./src/index.ts",
+
+	output: {
+		libraryTarget: "this",
+		filename: "index.js",
+		path: __dirname + "/dist/"
+	},
+
+
+	optimization: {
+		minimize: !isDebug,
+		mergeDuplicateChunks: !isDebug,
+		removeEmptyChunks: !isDebug
+	}
+}
