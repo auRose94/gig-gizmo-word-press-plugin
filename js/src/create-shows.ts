@@ -6,8 +6,13 @@ import { default as $ } from "jquery";
 
 	function getUnusedID() {
 		let current = 0;
-		for (; current < indexMap.size; current++)
-			if (indexMap.get(current) !== true) return current;
+		for (let ind in indexMap.keys()) {
+			let int = Number.parseInt(ind);
+			if (current == int)
+				current = int + 1;
+			if (!indexMap.has(current))
+				break;
+		}
 		return current;
 	}
 
@@ -42,8 +47,8 @@ import { default as $ } from "jquery";
 			<button id="add-button-${currentIndex}" type="button" class="add-button btn btn-outline-primary btn-sm"><span class="add-icon dashicons dashicons-plus"></span></button>
 			<button id="sub-button-${currentIndex}" type="button" class="sub-button btn btn-outline-primary btn-sm"><span class="sub-icon dashicons dashicons-minus"></span></button>
 		</div>`);
-		$(`#add-button-${currentIndex}`).on("click.gg.addButtonPress", addButtonPress);
-		$(`#sub-button-${currentIndex}`).on("click.gg.removeButtonPress", removeButtonPress);
+		$(".add-button").on("click", addButtonPress);
+		$(".sub-button").on("click", removeButtonPress);
 		$(".sub-button").prop(
 			"disabled",
 			$(".date-time").length <= 1
@@ -52,7 +57,8 @@ import { default as $ } from "jquery";
 
 	$(function () {
 		'use strict';
-		addButtonPress(jQuery.Event("load"));
+		$("#sub-button").prop("disabled", true);
+		$("#add-button").on("click", addButtonPress);
 	});
 
 })(jQuery);
