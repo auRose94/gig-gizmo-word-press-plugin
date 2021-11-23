@@ -16,33 +16,36 @@ import { default as $ } from "jquery";
 		return current;
 	}
 
-	function registerID(id: Number) {
-		indexMap.set(id, true);
-	}
-
-	function removeButtonPress(event: JQuery.Event, el: HTMLElement) {
+	function removeButtonPress(event: JQuery.Event) {
 		event.preventDefault();
-		$(el).parent().remove();
+		let el = (event as any)["target"] as HTMLElement;
+		let root = $(el).parent();
+		while (root && !root.hasClass("date-time"))
+			root = root.parent()
+		let id = Number(root[0].id.replace("time-", ""));
+		indexMap.set(id, false);
+		root.remove();
 		$(".sub-button").prop(
 			"disabled",
 			$(".date-time").length <= 1
 		);
 	}
 
-	function addButtonPress(event: JQuery.Event, el: HTMLElement) {
+	function addButtonPress(event: JQuery.Event) {
 		let currentIndex = getUnusedID();
-		registerID(currentIndex);
+		indexMap.set(currentIndex, true);
 		event.preventDefault();
-		$(el).parent().after(`
-		<div class="date-time form-group">
+		let root = $("#submit");
+		root.before(`
+		<div class="date-time form-group" id="time-${currentIndex}">
 			<label for="date">Date</label>
 			<input name="date-${currentIndex}" id="date" type="date" />
 			<label for="time-start">Start Time</label>
 			<input name="time-start-${currentIndex}" id="time-start" type="time" />
 			<label for="time-stop">Stop Time</label>
 			<input name="time-stop-${currentIndex}" id="time-stop" type="time" />
-			<button id="add-button" type="button" class="add-button btn btn-outline-primary btn-sm"><span class="add-icon dashicons dashicons-plus"></span></button>
-			<button id="sub-button" type="button" class="sub-button btn btn-outline-primary btn-sm"><span class="sub-icon dashicons dashicons-minus"></span></button>
+			<button id="add-button-${currentIndex}" type="button" class="add-button btn btn-outline-primary btn-sm"><span class="add-icon dashicons dashicons-plus"></span></button>
+			<button id="sub-button-${currentIndex}" type="button" class="sub-button btn btn-outline-primary btn-sm"><span class="sub-icon dashicons dashicons-minus"></span></button>
 		</div>`);
 		$(".add-button").on("click", addButtonPress);
 		$(".sub-button").on("click", removeButtonPress);
@@ -56,7 +59,6 @@ import { default as $ } from "jquery";
 		'use strict';
 		$("#sub-button").prop("disabled", true);
 		$("#add-button").on("click", addButtonPress);
-
 	});
 
 })(jQuery);
